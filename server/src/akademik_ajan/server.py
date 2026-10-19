@@ -13,7 +13,7 @@ mcp = MCPServer(
     name="akademik-ajan",
     version=__version__,
     instructions=(
-        "Academic tools backed by Crossref and OpenAlex. Only report a citation as "
+        "Academic tools backed by Crossref, OpenAlex and TR Dizin. Only report a citation as "
         "real when verify_reference returns 'verified'. Status 'error' means the "
         "service could not be reached and says nothing about whether a source exists."
     ),
@@ -27,7 +27,7 @@ async def verify_reference(
     year: int | None = None,
     doi: str | None = None,
 ) -> dict[str, Any]:
-    """Check one reference against Crossref/OpenAlex.
+    """Check one reference against Crossref, TR Dizin and OpenAlex.
 
     Give a DOI when the citation has one; otherwise give the title (and authors
     and year if known). Returns a status (verified, partial_match, mismatch,
@@ -58,7 +58,7 @@ async def lookup_doi(doi: str) -> dict[str, Any]:
 async def search_works(
     title: str, authors: list[str] | None = None, year: int | None = None, rows: int = 5
 ) -> list[dict[str, Any]]:
-    """Search Crossref (then OpenAlex) for works matching a title, authors and year."""
+    """Search Crossref, then TR Dizin and OpenAlex if needed, for works matching a title."""
     rows = max(1, min(rows, 20))
     records = await anyio.to_thread.run_sync(
         lambda: verify.search_works(title, authors, year, rows=rows)

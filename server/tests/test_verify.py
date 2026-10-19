@@ -66,6 +66,30 @@ def test_title_search_finds_turkish_work(fetcher):
 def test_title_search_with_no_plausible_candidate(fetcher):
     r = verify_reference(title="Quantum blockchain for medieval poetry", fetch=fetcher)
     assert r["status"] == "not_found"
+    # every tier was consulted before giving up
+    assert fetcher.called("trdizin.gov.tr") and fetcher.called("openalex.org")
+
+
+def test_confident_crossref_match_skips_other_sources(fetcher):
+    verify_reference(title="Attention is all you need", authors=["Vaswani"], fetch=fetcher)
+    assert not fetcher.called("trdizin.gov.tr")
+    assert not fetcher.called("openalex.org")
+
+
+def test_trdizin_finds_turkish_paper_by_its_turkish_title(fetcher):
+    # TR Dizin lists the English title first; the Turkish one must still match.
+    r = verify_reference(title="Bilgi güvenliği farkındalığında insan faktörü",
+                         authors=["Demir, Ayşe"], year=2019, fetch=fetcher)
+    assert r["status"] == "verified"
+    assert r["record"]["source"] == "trdizin"
+    assert r["record"]["url"].endswith("/424242")
+
+
+def test_doi_known_only_to_trdizin(fetcher):
+    rec = lookup_doi("https://doi.org/10.17341/TR.ONLY.2019", fetch=fetcher)
+    assert rec is not None and rec.source == "trdizin"
+    assert rec.authors == ["DEMİR", "ÖZ"]
+    assert rec.venue == "Polis Bilimleri Dergisi"
 
 
 def test_network_failure_is_error_not_not_found():

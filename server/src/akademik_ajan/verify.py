@@ -1,9 +1,15 @@
-"""Citation verification against Crossref and OpenAlex.
+"""Citation verification against Crossref, TR Dizin and OpenAlex.
 
 The core rule of this module: a reference is only called "verified" when a
 real bibliographic record was retrieved and the fields the user supplied agree
 with it. Network failures are reported as errors, never as "not found", so a
 flaky connection can't be mistaken for a fabricated citation.
+
+Source order
+  DOI given:   Crossref -> OpenAlex -> TR Dizin
+  title only:  Crossref; if no confident match, TR Dizin; if still none, OpenAlex.
+TR Dizin (ULAKBİM's national index) covers many Turkish journals that are
+missing from, or poorly represented in, the international indexes.
 """
 
 from __future__ import annotations
@@ -19,6 +25,8 @@ from .http import Fetcher, build_url, fetch_json
 
 CROSSREF = "https://api.crossref.org/works"
 OPENALEX = "https://api.openalex.org/works"
+TRDIZIN = "https://search.trdizin.gov.tr/api/defaultSearch/publication/"
+TRDIZIN_PAGE = "https://search.trdizin.gov.tr/tr/yayin/detay/{id}"
 
 TITLE_MATCH = 0.90  # at or above: same work
 TITLE_CLOSE = 0.75  # between CLOSE and MATCH: probably same work, needs a human look
@@ -36,12 +44,17 @@ class Record:
     year: int | None = None
     venue: str | None = None
     abstract: str | None = None
+    alt_titles: list[str] = field(default_factory=list)  # e.g. the English title of a Turkish paper
+    url: str | None = None
+
+    def titles(self) -> list[str]:
+        return [t for t in [self.title, *self.alt_titles] if t]
 
     def to_dict(self) -> dict[str, Any]:
         d = asdict(self)
         if d["abstract"] and len(d["abstract"]) > 1500:
             d["abstract"] = d["abstract"][:1500] + "…"
-        return d
+        return {k: v for k, v in d.items() if v not in (None, [])}
 
 
 # --------------------------------------------------------------------------- #
@@ -75,6 +88,10 @@ def title_similarity(a: str, b: str) -> float:
     return round(difflib.SequenceMatcher(None, fa, fb).ratio(), 3)
 
 
+def best_title_similarity(claimed: str, record: Record) -> float:
+    return max((title_similarity(claimed, t) for t in record.titles()), default=0.0)
+
+
 def family_name(author: str) -> str:
     """Best-effort family name from 'Last, First' or 'First Last'."""
     author = author.strip().strip("{}")
@@ -103,14 +120,17 @@ def parse_crossref(msg: dict[str, Any]) -> Record:
     abstract = msg.get("abstract")
     if abstract:
         abstract = re.sub(r"\s+", " ", _TAG_RE.sub(" ", abstract)).strip()
+    doi = normalize_doi(msg.get("DOI"))
     return Record(
         source="crossref",
-        doi=normalize_doi(msg.get("DOI")),
+        doi=doi,
         title=titles[0] or "",
+        alt_titles=[t for t in (msg.get("original-title") or []) + (msg.get("subtitle") or []) if t],
         authors=[a.get("family") or a.get("name") or "" for a in msg.get("author") or []],
         year=_crossref_year(msg),
         venue=venues[0],
         abstract=abstract or None,
+        url=f"https://doi.org/{doi}" if doi else None,
     )
 
 
@@ -134,25 +154,88 @@ def parse_openalex(work: dict[str, Any]) -> Record:
         year=work.get("publication_year"),
         venue=source.get("display_name"),
         abstract=_openalex_abstract(work.get("abstract_inverted_index")),
+        url=work.get("id"),
+    )
+
+
+def parse_trdizin(src: dict[str, Any]) -> Record:
+    """Parse one TR Dizin hit (`_source`). Each language version carries its own title."""
+    versions = src.get("abstracts") or []
+    titles = [v.get("title", "").strip() for v in versions]
+    titles = [t for t in titles if len(t) > 2]  # TR Dizin uses "-" for missing titles
+    abstract = next((v.get("abstract") for v in versions if v.get("abstract")), None)
+    authors = sorted(src.get("authors") or [], key=lambda a: a.get("order") or 0)
+    journal = src.get("journal") if isinstance(src.get("journal"), dict) else {}
+    year = src.get("publicationYear")
+    return Record(
+        source="trdizin",
+        doi=normalize_doi(src.get("doi")),
+        title=titles[0] if titles else "",
+        alt_titles=titles[1:],
+        authors=[family_name(a.get("inPublicationName") or a.get("name") or "") for a in authors],
+        year=int(year) if year else None,
+        venue=journal.get("name"),
+        abstract=abstract,
+        url=TRDIZIN_PAGE.format(id=src["id"]) if src.get("id") else None,
     )
 
 
 # --------------------------------------------------------------------------- #
-# Lookups
+# Source queries
+# --------------------------------------------------------------------------- #
+
+
+def _crossref_doi(doi: str, fetch: Fetcher) -> Record | None:
+    status, data = fetch(f"{CROSSREF}/{urllib.parse.quote(doi, safe='/')}")
+    if status == 200 and data and data.get("message"):
+        return parse_crossref(data["message"])
+    return None
+
+
+def _openalex_doi(doi: str, fetch: Fetcher) -> Record | None:
+    status, data = fetch(f"{OPENALEX}/https://doi.org/{urllib.parse.quote(doi, safe='/')}")
+    if status == 200 and data:
+        return parse_openalex(data)
+    return None
+
+
+def _trdizin_query(query: str, fetch: Fetcher) -> list[Record]:
+    url = build_url(TRDIZIN, {"q": query, "order": "relevance-DESC", "page": 1})
+    status, data = fetch(url)
+    hits = ((data or {}).get("hits") or {}).get("hits") if status == 200 else None
+    return [parse_trdizin(h["_source"]) for h in hits or [] if h.get("_source")]
+
+
+def _trdizin_doi(doi: str, fetch: Fetcher) -> Record | None:
+    return next((r for r in _trdizin_query(doi, fetch) if r.doi == doi), None)
+
+
+def _crossref_search(query: str, rows: int, fetch: Fetcher) -> list[Record]:
+    status, data = fetch(build_url(CROSSREF, {"query.bibliographic": query, "rows": rows}))
+    items = (data or {}).get("message", {}).get("items") if status == 200 else None
+    return [parse_crossref(i) for i in items or []]
+
+
+def _openalex_search(title: str, rows: int, fetch: Fetcher) -> list[Record]:
+    status, data = fetch(build_url(OPENALEX, {"search": title, "per-page": rows}))
+    results = (data or {}).get("results") if status == 200 else None
+    return [parse_openalex(r) for r in results or []]
+
+
+# --------------------------------------------------------------------------- #
+# Public lookups
 # --------------------------------------------------------------------------- #
 
 
 def lookup_doi(doi: str, fetch: Fetcher = fetch_json) -> Record | None:
-    """Resolve a DOI via Crossref, falling back to OpenAlex. None if neither knows it."""
+    """Resolve a DOI via Crossref, then OpenAlex, then TR Dizin. None if nobody knows it."""
     bare = normalize_doi(doi)
     if not bare:
         return None
-    status, data = fetch(f"{CROSSREF}/{urllib.parse.quote(bare, safe='/')}")
-    if status == 200 and data and data.get("message"):
-        return parse_crossref(data["message"])
-    status, data = fetch(f"{OPENALEX}/https://doi.org/{urllib.parse.quote(bare, safe='/')}")
-    if status == 200 and data:
-        return parse_openalex(data)
+    for resolver in (_crossref_doi, _openalex_doi, _trdizin_doi):
+        record = resolver(bare, fetch)
+        if record is not None:
+            return record
     return None
 
 
@@ -163,17 +246,34 @@ def search_works(
     rows: int = 5,
     fetch: Fetcher = fetch_json,
 ) -> list[Record]:
-    """Bibliographic search on Crossref; falls back to OpenAlex if Crossref is empty."""
+    """Tiered search, best candidates first.
+
+    Crossref is queried first. TR Dizin, then OpenAlex, are only consulted when
+    nothing so far matches the title confidently, which keeps request volume low.
+    """
     query = " ".join([title, *(family_name(a) for a in authors or [])])
     if year:
         query += f" {year}"
-    status, data = fetch(build_url(CROSSREF, {"query.bibliographic": query, "rows": rows}))
-    items = (data or {}).get("message", {}).get("items") if status == 200 else None
-    if items:
-        return [parse_crossref(i) for i in items]
-    status, data = fetch(build_url(OPENALEX, {"search": title, "per-page": rows}))
-    results = (data or {}).get("results") if status == 200 else None
-    return [parse_openalex(r) for r in results or []]
+
+    found: list[Record] = []
+    seen: set[str] = set()
+
+    def add(records: list[Record]) -> float:
+        for r in records:
+            key = r.doi or f"{r.source}:{_fold(r.title)}"
+            if key not in seen:
+                seen.add(key)
+                found.append(r)
+        return max((best_title_similarity(title, r) for r in found), default=0.0)
+
+    best = add(_crossref_search(query, rows, fetch))
+    if best < TITLE_MATCH:
+        best = add(_trdizin_query(title, fetch)[:rows])
+    if best < TITLE_MATCH:
+        add(_openalex_search(title, rows, fetch))
+
+    found.sort(key=lambda r: best_title_similarity(title, r), reverse=True)
+    return found
 
 
 # --------------------------------------------------------------------------- #
@@ -196,7 +296,7 @@ def _compare(
             worst = level
 
     if title:
-        sim = title_similarity(title, record.title)
+        sim = best_title_similarity(title, record)
         level = "ok" if sim >= TITLE_MATCH else "warn" if sim >= TITLE_CLOSE else "fail"
         add("title", level, f"similarity {sim} (record: {record.title!r})")
 
@@ -256,7 +356,7 @@ def verify_reference(
                 return {
                     "status": "doi_not_found",
                     "doi": bare,
-                    "message": "Neither Crossref nor OpenAlex knows this DOI.",
+                    "message": "Neither Crossref, OpenAlex nor TR Dizin knows this DOI.",
                 }
             checks, worst = _compare(record, title, authors, year)
             status = {"ok": "verified", "warn": "partial_match", "fail": "mismatch"}[worst]
@@ -269,16 +369,19 @@ def verify_reference(
     if not candidates:
         return {"status": "not_found", "message": "No candidates returned."}
 
-    scored = sorted(
-        ((title_similarity(title or "", c.title), c) for c in candidates),
-        key=lambda pair: pair[0],
-        reverse=True,
-    )
-    best_sim, best = scored[0]
+    # Rank by title, then let author/year break near-ties between versions of a work.
+    def score(r: Record) -> tuple[float, int]:
+        _, worst = _compare(r, None, authors, year)
+        return best_title_similarity(title or "", r), -{"ok": 0, "warn": 1, "fail": 2}[worst]
+
+    ranked = sorted(candidates, key=score, reverse=True)
+    best = ranked[0]
+    best_sim = best_title_similarity(title or "", best)
     checks, worst = _compare(best, title, authors, year)
     alternatives = [
-        {"similarity": s, "doi": c.doi, "title": c.title, "year": c.year}
-        for s, c in scored[1:3]
+        {"similarity": best_title_similarity(title or "", c), "source": c.source,
+         "doi": c.doi, "title": c.title, "year": c.year}
+        for c in ranked[1:3]
     ]
     if best_sim < TITLE_CLOSE:
         status = "not_found"

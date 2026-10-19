@@ -5,7 +5,7 @@ description: Verify that every reference in a manuscript, reference list or BibT
 
 # Verify citations
 
-Fabricated or mangled references are the most damaging error in AI-assisted academic writing. This skill checks each reference against Crossref and OpenAlex through the `akademik-ajan` MCP tools and reports what it found. It never "fixes" a reference from memory.
+Fabricated or mangled references are the most damaging error in AI-assisted academic writing. This skill checks each reference against Crossref, TR Dizin and OpenAlex through the `akademik-ajan` MCP tools and reports what it found. It never "fixes" a reference from memory.
 
 ## Procedure
 
@@ -31,5 +31,6 @@ Fabricated or mangled references are the most damaging error in AI-assisted acad
 
 - Never invent or "complete" a DOI, author, page range or year from memory.
 - `error` is not evidence of fabrication.
-- Non-English titles (e.g. Turkish) are compared with diacritics folded; a `possible_match` on such a title still needs the user's confirmation.
+- Non-English titles (e.g. Turkish) are compared with diacritics folded and against every language version of the record's title; a `possible_match` still needs the user's confirmation.
+- Turkish sources: TR Dizin is searched automatically. Theses (YÖK Ulusal Tez Merkezi) and journals only on DergiPark cannot be checked automatically — when such a reference comes back `not_found`, say so and ask the user to confirm it manually instead of calling it fabricated.
 - Respect rate limits: verify sequentially; for very long lists, verify in batches of ~50 and report progress.

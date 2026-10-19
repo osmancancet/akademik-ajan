@@ -34,11 +34,31 @@ OPENALEX_ONLY = {
 }
 
 
+# A Turkish paper indexed only in TR Dizin; its first-listed title is the English one.
+TRDIZIN_ONLY = {
+    "id": 424242,
+    "doi": "10.17341/tr.only.2019",
+    "publicationYear": 2019,
+    "abstracts": [
+        {"language": "ENG", "title": "Human Factor in Information Security Awareness",
+         "abstract": "This study examines..."},
+        {"language": "TUR", "title": "Bilgi Güvenliği Farkındalığında İnsan Faktörü",
+         "abstract": "Bu çalışma..."},
+    ],
+    "authors": [
+        {"name": "Ayşe DEMİR", "inPublicationName": "Ayşe DEMİR", "order": 1},
+        {"name": "Mehmet ÖZ", "inPublicationName": "Mehmet ÖZ", "order": 2},
+    ],
+    "journal": {"name": "Polis Bilimleri Dergisi"},
+}
+
+
 class FakeFetcher:
     def __init__(self, routes: dict[str, tuple[int, Any]], search: list[dict] | None = None,
-                 fail: bool = False):
+                 trdizin: list[dict] | None = None, fail: bool = False):
         self.routes = routes
         self.search = search or []
+        self.trdizin = trdizin or []
         self.fail = fail
         self.calls: list[str] = []
 
@@ -51,7 +71,12 @@ class FakeFetcher:
                 return reply
         if "api.crossref.org/works?" in url:
             return 200, {"message": {"items": self.search}}
+        if url.startswith("https://search.trdizin.gov.tr/api/"):
+            return 200, {"hits": {"hits": [{"_source": s} for s in self.trdizin]}}
         return 404, None
+
+    def called(self, host: str) -> bool:
+        return any(host in u for u in self.calls)
 
 
 @pytest.fixture
@@ -63,4 +88,5 @@ def fetcher():
             "https://api.openalex.org/works/https://doi.org/10.9999/oa.only": (200, OPENALEX_ONLY),
         },
         search=[TURKISH, VASWANI],
+        trdizin=[TRDIZIN_ONLY],
     )

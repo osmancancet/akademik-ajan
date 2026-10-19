@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -20,6 +21,8 @@ from . import __version__
 Fetcher = Callable[[str], "tuple[int, Any]"]
 
 TIMEOUT_SECONDS = 15
+RETRIES = 3
+MAX_BACKOFF_SECONDS = 20.0
 
 
 def _user_agent() -> str:
@@ -37,19 +40,38 @@ def build_url(base: str, params: dict[str, Any] | None = None) -> str:
     return f"{base}?{urllib.parse.urlencode(clean)}"
 
 
+def _retry_delay(exc: urllib.error.HTTPError, attempt: int) -> float:
+    header = exc.headers.get("Retry-After") if exc.headers else None
+    try:
+        return min(float(header), MAX_BACKOFF_SECONDS) if header else 2.0 * (attempt + 1)
+    except ValueError:
+        return 2.0 * (attempt + 1)
+
+
 def fetch_json(url: str) -> tuple[int, Any]:
-    """GET a URL and return (status, json). Non-JSON or error bodies give None."""
+    """GET a URL and return (status, json). Non-JSON or error bodies give None.
+
+    429 and 503 responses are retried (honouring Retry-After); if the service is
+    still refusing afterwards a ConnectionError is raised, so rate limiting is
+    reported as an error rather than as "not found".
+    """
     req = urllib.request.Request(
         url, headers={"User-Agent": _user_agent(), "Accept": "application/json"}
     )
-    try:
-        with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as resp:
-            body = resp.read()
-            status = resp.status
-    except urllib.error.HTTPError as exc:
-        return exc.code, None
-    except (urllib.error.URLError, TimeoutError) as exc:
-        raise ConnectionError(f"Network error for {url}: {exc}") from exc
+    for attempt in range(RETRIES + 1):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as resp:
+                body = resp.read()
+                status = resp.status
+            break
+        except urllib.error.HTTPError as exc:
+            if exc.code not in (429, 503):
+                return exc.code, None
+            if attempt == RETRIES:
+                raise ConnectionError(f"Service busy ({exc.code}) for {url}") from exc
+            time.sleep(_retry_delay(exc, attempt))
+        except (urllib.error.URLError, TimeoutError) as exc:
+            raise ConnectionError(f"Network error for {url}: {exc}") from exc
     try:
         return status, json.loads(body)
     except ValueError:
