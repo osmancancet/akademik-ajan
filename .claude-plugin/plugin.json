@@ -1,0 +1,9 @@
+{
+  "name": "akademik-ajan",
+  "version": "0.1.0",
+  "description": "Academic agent toolkit: verifies citations against Crossref and OpenAlex so fabricated references never reach a manuscript.",
+  "author": { "name": "Osman Can Çetlenbik" },
+  "repository": "https://github.com/osmancancet/akademik-ajan",
+  "license": "MIT",
+  "keywords": ["academic", "citations", "crossref", "openalex", "bibtex", "research"]
+}

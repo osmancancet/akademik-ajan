@@ -1,0 +1,295 @@
+"""Citation verification against Crossref and OpenAlex.
+
+The core rule of this module: a reference is only called "verified" when a
+real bibliographic record was retrieved and the fields the user supplied agree
+with it. Network failures are reported as errors, never as "not found", so a
+flaky connection can't be mistaken for a fabricated citation.
+"""
+
+from __future__ import annotations
+
+import difflib
+import re
+import unicodedata
+import urllib.parse
+from dataclasses import asdict, dataclass, field
+from typing import Any
+
+from .http import Fetcher, build_url, fetch_json
+
+CROSSREF = "https://api.crossref.org/works"
+OPENALEX = "https://api.openalex.org/works"
+
+TITLE_MATCH = 0.90  # at or above: same work
+TITLE_CLOSE = 0.75  # between CLOSE and MATCH: probably same work, needs a human look
+
+_DOI_RE = re.compile(r"10\.\d{4,9}/[^\s\"<>]+", re.IGNORECASE)
+_TAG_RE = re.compile(r"<[^>]+>")
+
+
+@dataclass
+class Record:
+    source: str
+    doi: str | None
+    title: str
+    authors: list[str] = field(default_factory=list)  # family names, in order
+    year: int | None = None
+    venue: str | None = None
+    abstract: str | None = None
+
+    def to_dict(self) -> dict[str, Any]:
+        d = asdict(self)
+        if d["abstract"] and len(d["abstract"]) > 1500:
+            d["abstract"] = d["abstract"][:1500] + "…"
+        return d
+
+
+# --------------------------------------------------------------------------- #
+# Normalisation helpers
+# --------------------------------------------------------------------------- #
+
+
+def normalize_doi(value: str | None) -> str | None:
+    """Extract a bare, lower-cased DOI from a DOI string, URL or citation text."""
+    if not value:
+        return None
+    match = _DOI_RE.search(urllib.parse.unquote(value))
+    if not match:
+        return None
+    return match.group(0).rstrip(".,;:)]}").lower()
+
+
+def _fold(text: str) -> str:
+    """Lower-case, strip diacritics (ç→c, ğ→g, ı→i) and punctuation."""
+    text = text.replace("ı", "i").replace("İ", "I")
+    text = unicodedata.normalize("NFKD", text)
+    text = "".join(c for c in text if not unicodedata.combining(c))
+    text = re.sub(r"[^\w\s]", " ", text.casefold())
+    return re.sub(r"\s+", " ", text).strip()
+
+
+def title_similarity(a: str, b: str) -> float:
+    fa, fb = _fold(a), _fold(b)
+    if not fa or not fb:
+        return 0.0
+    return round(difflib.SequenceMatcher(None, fa, fb).ratio(), 3)
+
+
+def family_name(author: str) -> str:
+    """Best-effort family name from 'Last, First' or 'First Last'."""
+    author = author.strip().strip("{}")
+    if "," in author:
+        return author.split(",", 1)[0].strip()
+    parts = author.split()
+    return parts[-1] if parts else ""
+
+
+# --------------------------------------------------------------------------- #
+# Source parsers
+# --------------------------------------------------------------------------- #
+
+
+def _crossref_year(msg: dict[str, Any]) -> int | None:
+    for key in ("issued", "published-print", "published-online", "published", "created"):
+        parts = (msg.get(key) or {}).get("date-parts") or []
+        if parts and parts[0] and parts[0][0]:
+            return int(parts[0][0])
+    return None
+
+
+def parse_crossref(msg: dict[str, Any]) -> Record:
+    titles = msg.get("title") or [""]
+    venues = msg.get("container-title") or [None]
+    abstract = msg.get("abstract")
+    if abstract:
+        abstract = re.sub(r"\s+", " ", _TAG_RE.sub(" ", abstract)).strip()
+    return Record(
+        source="crossref",
+        doi=normalize_doi(msg.get("DOI")),
+        title=titles[0] or "",
+        authors=[a.get("family") or a.get("name") or "" for a in msg.get("author") or []],
+        year=_crossref_year(msg),
+        venue=venues[0],
+        abstract=abstract or None,
+    )
+
+
+def _openalex_abstract(index: dict[str, list[int]] | None) -> str | None:
+    if not index:
+        return None
+    positions = [(pos, word) for word, idxs in index.items() for pos in idxs]
+    return " ".join(word for _, word in sorted(positions)) or None
+
+
+def parse_openalex(work: dict[str, Any]) -> Record:
+    source = ((work.get("primary_location") or {}).get("source") or {})
+    return Record(
+        source="openalex",
+        doi=normalize_doi(work.get("doi")),
+        title=work.get("display_name") or work.get("title") or "",
+        authors=[
+            family_name((a.get("author") or {}).get("display_name") or "")
+            for a in work.get("authorships") or []
+        ],
+        year=work.get("publication_year"),
+        venue=source.get("display_name"),
+        abstract=_openalex_abstract(work.get("abstract_inverted_index")),
+    )
+
+
+# --------------------------------------------------------------------------- #
+# Lookups
+# --------------------------------------------------------------------------- #
+
+
+def lookup_doi(doi: str, fetch: Fetcher = fetch_json) -> Record | None:
+    """Resolve a DOI via Crossref, falling back to OpenAlex. None if neither knows it."""
+    bare = normalize_doi(doi)
+    if not bare:
+        return None
+    status, data = fetch(f"{CROSSREF}/{urllib.parse.quote(bare, safe='/')}")
+    if status == 200 and data and data.get("message"):
+        return parse_crossref(data["message"])
+    status, data = fetch(f"{OPENALEX}/https://doi.org/{urllib.parse.quote(bare, safe='/')}")
+    if status == 200 and data:
+        return parse_openalex(data)
+    return None
+
+
+def search_works(
+    title: str,
+    authors: list[str] | None = None,
+    year: int | None = None,
+    rows: int = 5,
+    fetch: Fetcher = fetch_json,
+) -> list[Record]:
+    """Bibliographic search on Crossref; falls back to OpenAlex if Crossref is empty."""
+    query = " ".join([title, *(family_name(a) for a in authors or [])])
+    if year:
+        query += f" {year}"
+    status, data = fetch(build_url(CROSSREF, {"query.bibliographic": query, "rows": rows}))
+    items = (data or {}).get("message", {}).get("items") if status == 200 else None
+    if items:
+        return [parse_crossref(i) for i in items]
+    status, data = fetch(build_url(OPENALEX, {"search": title, "per-page": rows}))
+    results = (data or {}).get("results") if status == 200 else None
+    return [parse_openalex(r) for r in results or []]
+
+
+# --------------------------------------------------------------------------- #
+# Verification
+# --------------------------------------------------------------------------- #
+
+
+def _compare(
+    record: Record, title: str | None, authors: list[str] | None, year: int | None
+) -> tuple[list[dict[str, Any]], str]:
+    """Compare claimed fields with a record. Returns (checks, worst_level)."""
+    checks: list[dict[str, Any]] = []
+    levels = {"ok": 0, "warn": 1, "fail": 2}
+    worst = "ok"
+
+    def add(name: str, level: str, detail: str) -> None:
+        nonlocal worst
+        checks.append({"field": name, "result": level, "detail": detail})
+        if levels[level] > levels[worst]:
+            worst = level
+
+    if title:
+        sim = title_similarity(title, record.title)
+        level = "ok" if sim >= TITLE_MATCH else "warn" if sim >= TITLE_CLOSE else "fail"
+        add("title", level, f"similarity {sim} (record: {record.title!r})")
+
+    if authors:
+        claimed = _fold(family_name(authors[0]))
+        found = [_fold(a) for a in record.authors if a]
+        if not found:
+            add("first_author", "warn", "record lists no authors")
+        elif claimed == found[0]:
+            add("first_author", "ok", f"{record.authors[0]}")
+        elif claimed in found:
+            add("first_author", "warn", f"{authors[0]!r} is an author but not first")
+        else:
+            add("first_author", "fail", f"{authors[0]!r} not among {record.authors[:6]}")
+
+    if year:
+        if record.year is None:
+            add("year", "warn", "record has no year")
+        elif record.year == year:
+            add("year", "ok", str(year))
+        elif abs(record.year - year) == 1:
+            add("year", "warn", f"record says {record.year} (online-first vs print?)")
+        else:
+            add("year", "fail", f"record says {record.year}")
+
+    return checks, worst
+
+
+def verify_reference(
+    title: str | None = None,
+    authors: list[str] | None = None,
+    year: int | None = None,
+    doi: str | None = None,
+    fetch: Fetcher = fetch_json,
+) -> dict[str, Any]:
+    """Verify one reference.
+
+    Statuses:
+      verified        record found and every supplied field agrees
+      partial_match   record found, minor disagreements (year ±1, near title)
+      mismatch        DOI resolves to a different work (typical of fabricated refs)
+      possible_match  no DOI; a close but not certain candidate was found
+      doi_not_found   DOI resolves nowhere
+      not_found       no DOI and no plausible candidate
+      error           a network/service failure — NOT evidence of fabrication
+    """
+    if not (title or doi):
+        return {"status": "error", "message": "Provide at least a title or a DOI."}
+
+    try:
+        if doi:
+            bare = normalize_doi(doi)
+            if not bare:
+                return {"status": "error", "message": f"Could not parse a DOI from {doi!r}."}
+            record = lookup_doi(bare, fetch)
+            if record is None:
+                return {
+                    "status": "doi_not_found",
+                    "doi": bare,
+                    "message": "Neither Crossref nor OpenAlex knows this DOI.",
+                }
+            checks, worst = _compare(record, title, authors, year)
+            status = {"ok": "verified", "warn": "partial_match", "fail": "mismatch"}[worst]
+            return {"status": status, "doi": bare, "record": record.to_dict(), "checks": checks}
+
+        candidates = search_works(title or "", authors, year, fetch=fetch)
+    except ConnectionError as exc:
+        return {"status": "error", "message": str(exc)}
+
+    if not candidates:
+        return {"status": "not_found", "message": "No candidates returned."}
+
+    scored = sorted(
+        ((title_similarity(title or "", c.title), c) for c in candidates),
+        key=lambda pair: pair[0],
+        reverse=True,
+    )
+    best_sim, best = scored[0]
+    checks, worst = _compare(best, title, authors, year)
+    alternatives = [
+        {"similarity": s, "doi": c.doi, "title": c.title, "year": c.year}
+        for s, c in scored[1:3]
+    ]
+    if best_sim < TITLE_CLOSE:
+        status = "not_found"
+    elif worst == "ok":
+        status = "verified"
+    else:
+        status = "possible_match"
+    return {
+        "status": status,
+        "doi": best.doi,
+        "record": best.to_dict(),
+        "checks": checks,
+        "alternatives": alternatives,
+    }

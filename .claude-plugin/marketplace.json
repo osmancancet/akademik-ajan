@@ -1,0 +1,11 @@
+{
+  "name": "akademik-ajan",
+  "owner": { "name": "Osman Can Çetlenbik" },
+  "plugins": [
+    {
+      "name": "akademik-ajan",
+      "source": "./",
+      "description": "Citation verification against Crossref and OpenAlex for academic writing."
+    }
+  ]
+}
