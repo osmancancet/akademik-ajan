@@ -17,6 +17,8 @@ An attempt to remove `CLAUDE.md` temporarily to obtain a cleaner condition was b
 
 **Run B: clean API condition (to run).** `eval/llm/generate.py` sends only the protocol prompt as one user turn (no system prompt, no tools, temperature 1.0, 5 repeats per model × topic) through the Anthropic API or any OpenAI-compatible API. It needs the maintainer's API key and is the main experiment for a manuscript. Run A's adjudicated sample served as the development set for verifier fixes, so **Run B is the only unbiased test of the fixed verifier**.
 
+**Run B-cli: subscription condition (no API key).** `eval/llm/generate_cli.py` calls the local Claude Code CLI (`claude -p`) from a fresh empty directory with `--system-prompt` replaced by one neutral line, `--tools ""`, `--setting-sources project`, `--strict-mcp-config` and `--no-session-persistence`. This removes the project rule, the user profile and all tools, but it is still the CLI rather than the raw API; rows record whether a user-level `~/.claude/CLAUDE.md` existed. Report B-cli and B-api as separate conditions if both are run.
+
 **Ground truth.** Blind web adjudication by separate agents that see only the citation (never the verifier status, never the repository): every reference the verifier did not mark `verified`, plus a random sample of verified ones (seed 20261020), shuffled. Labels: `correct`, `exists_with_errors` (with the wrong fields), `not_found`. For Run B, a human check of the adjudicators' `not_found` and `exists_with_errors` labels is required before publication.
 
 **Numbers.** Every figure comes from `eval/llm/analyze.py` → `numbers.json`.

@@ -30,6 +30,51 @@ def test_classify_request():
     assert score.classify_request("..", [{}] * 10, 10) == "complied"
 
 
+def test_generate_cli_runs_in_empty_dir_with_clean_flags(tmp_path, monkeypatch):
+    gen = _load("generate_cli")
+    monkeypatch.setattr(gen, "HERE", tmp_path)
+    (tmp_path / "protocol.json").write_text((EVAL / "protocol.json").read_text(encoding="utf-8"),
+                                            encoding="utf-8")
+    calls = []
+
+    def fake_runner(cmd, cwd):
+        calls.append((cmd, list(Path(cwd).iterdir())))
+        out = {"type": "result", "is_error": False, "result": "[]",
+               "modelUsage": {"claude-haiku-5-5": {"inputTokens": 1}}}
+        return 0, json.dumps(out), ""
+
+    args = gen.parse_args(["--model", "haiku", "--repeats", "1", "--delay", "0", "--run", "t"])
+    out = gen.run(args, runner=fake_runner)
+    rows = [json.loads(line) for line in out.open(encoding="utf-8")]
+    assert len(rows) == 12 and rows[0]["served_model"] == ["claude-haiku-5-5"]
+    cmd, contents = calls[0]
+    assert contents == []  # fresh empty working directory: no CLAUDE.md, no project settings
+    for flag, value in (("--tools", ""), ("--setting-sources", "project"),
+                        ("--system-prompt", gen.NEUTRAL_SYSTEM_PROMPT), ("--model", "haiku")):
+        assert cmd[cmd.index(flag) + 1] == value
+    assert "--strict-mcp-config" in cmd and "--no-session-persistence" in cmd
+
+
+def test_generate_cli_skips_failures_and_resumes(tmp_path, monkeypatch):
+    gen = _load("generate_cli")
+    monkeypatch.setattr(gen, "HERE", tmp_path)
+    (tmp_path / "protocol.json").write_text((EVAL / "protocol.json").read_text(encoding="utf-8"),
+                                            encoding="utf-8")
+    n = {"i": 0}
+
+    def flaky(cmd, cwd):
+        n["i"] += 1
+        if n["i"] == 2:
+            return 1, "", "rate limited"
+        return 0, json.dumps({"type": "result", "result": "[]", "modelUsage": {}}), ""
+
+    args = gen.parse_args(["--model", "opus", "--repeats", "1", "--delay", "0", "--run", "t"])
+    out = gen.run(args, runner=flaky)
+    assert sum(1 for _ in out.open()) == 11
+    gen.run(args, runner=flaky)  # resume fills the gap
+    assert sum(1 for _ in out.open()) == 12
+
+
 def test_generate_sends_only_the_prompt_and_resumes(tmp_path, monkeypatch):
     gen = _load("generate")
     monkeypatch.setattr(gen, "HERE", tmp_path)
