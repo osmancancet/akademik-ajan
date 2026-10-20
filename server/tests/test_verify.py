@@ -127,6 +127,22 @@ def test_bilingual_title_resolved_via_second_source():
     assert r["status"] == "verified"
 
 
+def test_title_search_merges_other_language_title_from_duplicate():
+    # Regression (holdout, v0.2.0): Crossref returns only the Turkish title, TR Dizin the
+    # same DOI with both titles; the citation uses the English title.
+    crossref = {"DOI": "10.18016/ksutarimdoga.vi.499918",
+                "title": ["Süt Sığırcılığı İşletmelerinin Memnuniyet ve Sürdürülebilirliğine Etki Eden Faktörler"],
+                "author": [{"family": "Bakır"}], "issued": {"date-parts": [[2019]]}}
+    trdizin = {"id": 9, "doi": "10.18016/ksutarimdoga.vi.499918", "publicationYear": 2019,
+               "abstracts": [{"title": "Süt Sığırcılığı İşletmelerinin Memnuniyet ve Sürdürülebilirliğine Etki Eden Faktörler"},
+                             {"title": "The Factors Affecting the Satisfaction and Sustainability of the Dairy Cattle Farms"}],
+               "authors": [{"name": "Gökhan BAKIR", "order": 1}]}
+    f = FakeFetcher({}, search=[crossref], trdizin=[trdizin])
+    r = verify_reference(title="The factors affecting the satisfaction and sustainability of the dairy cattle farms",
+                         authors=["BAKIR"], year=2019, fetch=f)
+    assert r["status"] == "verified"
+
+
 def test_unreachable_fallback_does_not_sink_the_result(fetcher):
     def flaky(url):
         if "openalex.org" in url:

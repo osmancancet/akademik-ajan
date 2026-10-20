@@ -378,7 +378,7 @@ def _search(
         query += f" {year}"
 
     found: list[Record] = []
-    seen: set[str] = set()
+    seen: dict[str, Record] = {}
     unreachable: list[str] = []
 
     def add(name: str, run) -> float:
@@ -390,8 +390,16 @@ def _search(
         for r in records:
             key = r.doi or f"{r.source}:{_fold(r.title)}"
             if key not in seen:
-                seen.add(key)
+                seen[key] = r
                 found.append(r)
+            else:
+                # Same work from another source: keep its other-language titles, which
+                # the first source may lack (Crossref often holds only the Turkish title).
+                kept = seen[key]
+                kept.alt_titles += [t for t in r.titles() if t not in kept.titles()]
+                for y in r.years or ([r.year] if r.year else []):
+                    if y not in kept.years:
+                        kept.years.append(y)
         return max((best_title_similarity(title, r) for r in found), default=0.0)
 
     best = add("crossref", lambda: _crossref_search(query, rows, fetch))
