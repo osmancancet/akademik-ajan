@@ -3,6 +3,8 @@
 Kept dependency-free on purpose: fewer packages means a smaller supply-chain
 surface. Every request carries a descriptive User-Agent, and a contact
 address when AKADEMIK_AJAN_MAILTO is set (Crossref's "polite pool").
+OpenAlex requests carry OPENALEX_API_KEY as a bearer token when it is set;
+without a key OpenAlex shares a small daily budget per IP address.
 """
 
 from __future__ import annotations
@@ -55,9 +57,11 @@ def fetch_json(url: str) -> tuple[int, Any]:
     still refusing afterwards a ConnectionError is raised, so rate limiting is
     reported as an error rather than as "not found".
     """
-    req = urllib.request.Request(
-        url, headers={"User-Agent": _user_agent(), "Accept": "application/json"}
-    )
+    headers = {"User-Agent": _user_agent(), "Accept": "application/json"}
+    openalex_key = os.environ.get("OPENALEX_API_KEY", "").strip()
+    if openalex_key and urllib.parse.urlsplit(url).hostname == "api.openalex.org":
+        headers["Authorization"] = f"Bearer {openalex_key}"  # header, never the URL
+    req = urllib.request.Request(url, headers=headers)
     for attempt in range(RETRIES + 1):
         try:
             with urllib.request.urlopen(req, timeout=TIMEOUT_SECONDS) as resp:
@@ -67,6 +71,9 @@ def fetch_json(url: str) -> tuple[int, Any]:
         except urllib.error.HTTPError as exc:
             if exc.code not in (429, 503):
                 return exc.code, None
+            body = exc.read(2048).decode("utf-8", "replace") if exc.fp else ""
+            if "budget" in body.lower():  # OpenAlex daily quota: retrying cannot help
+                raise ConnectionError(f"Daily quota exhausted for {url}") from exc
             if attempt == RETRIES:
                 raise ConnectionError(f"Service busy ({exc.code}) for {url}") from exc
             time.sleep(_retry_delay(exc, attempt))

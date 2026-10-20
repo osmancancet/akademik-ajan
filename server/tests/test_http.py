@@ -45,6 +45,34 @@ def test_persistent_429_is_an_error_not_a_miss(monkeypatch):
         http.fetch_json("https://example.org/x")
 
 
+def test_exhausted_daily_budget_fails_fast(monkeypatch):
+    calls = []
+
+    def fake_urlopen(req, timeout):
+        calls.append(1)
+        raise urllib.error.HTTPError(req.full_url, 429, "busy", {"Retry-After": "6"},
+                                     io.BytesIO(b'{"message": "Insufficient budget."}'))
+
+    monkeypatch.setattr(http.urllib.request, "urlopen", fake_urlopen)
+    with pytest.raises(ConnectionError, match="quota"):
+        http.fetch_json("https://api.openalex.org/works?search=x")
+    assert len(calls) == 1
+
+
+def test_openalex_key_sent_as_header_only_to_openalex(monkeypatch):
+    seen = {}
+
+    def fake_urlopen(req, timeout):
+        seen[req.host] = req.get_header("Authorization")
+        return _Resp(b"{}")
+
+    monkeypatch.setenv("OPENALEX_API_KEY", "k123")
+    monkeypatch.setattr(http.urllib.request, "urlopen", fake_urlopen)
+    http.fetch_json("https://api.openalex.org/works/x")
+    http.fetch_json("https://api.crossref.org/works/x")
+    assert seen == {"api.openalex.org": "Bearer k123", "api.crossref.org": None}
+
+
 def test_404_is_returned_without_retry(monkeypatch):
     calls = []
 

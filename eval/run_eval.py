@@ -1,15 +1,16 @@
-"""Run the verifier on eval/data/refs.jsonl and report detection rates.
+"""Run the verifier on eval/data/<name>.jsonl and report detection rates.
 
 A real reference counts as accepted when the status is `verified` or
 `partial_match`. A fabricated one counts as caught when the status is anything
 except those two. `error` results are excluded from both rates and reported.
 
-Usage:  uv run --directory server python ../eval/run_eval.py
+Usage:  uv run --directory server python ../eval/run_eval.py [dev|holdout]
 """
 
 from __future__ import annotations
 
 import json
+import sys
 import time
 from collections import Counter, defaultdict
 from datetime import date
@@ -23,14 +24,15 @@ ACCEPT = {"verified", "partial_match"}
 
 
 def main() -> None:
-    cases = [json.loads(line) for line in (HERE / "data" / "refs.jsonl").open(encoding="utf-8")]
+    name = sys.argv[1] if len(sys.argv) > 1 else "dev"
+    cases = [json.loads(line) for line in (HERE / "data" / f"{name}.jsonl").open(encoding="utf-8")]
     rows = []
     for c in cases:
         r = verify_reference(title=c["title"], authors=c["authors"], year=c["year"], doi=c["doi"])
         rows.append({**c, "status": r["status"], "found_source": (r.get("record") or {}).get("source")})
         time.sleep(0.3)  # stay polite to the public APIs
 
-    (HERE / "data" / "results.jsonl").write_text(
+    (HERE / "data" / f"{name}.results.jsonl").write_text(
         "".join(json.dumps(x, ensure_ascii=False) + "\n" for x in rows), encoding="utf-8")
 
     groups: dict[tuple[str, str, str], Counter] = defaultdict(Counter)
@@ -46,7 +48,7 @@ def main() -> None:
     accepted = lambda s: s in ACCEPT  # noqa: E731
     caught = lambda s: s not in ACCEPT  # noqa: E731
     lines = [
-        "# Evaluation results",
+        f"# Evaluation results: {name} set",
         "",
         f"_akademik-ajan {__version__} · run {date.today().isoformat()} · {len(rows)} cases · "
         f"errors excluded: {sum(x['status'] == 'error' for x in rows)}_",
@@ -72,7 +74,7 @@ def main() -> None:
         "not citations produced by a language model. They model the common failure types but "
         "are not a substitute for an evaluation on real LLM output.",
     ]
-    (HERE / "RESULTS.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    (HERE / f"RESULTS-{name}.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("\n".join(lines))
 
 

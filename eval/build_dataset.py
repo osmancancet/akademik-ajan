@@ -3,9 +3,9 @@
 Real references are sampled from Crossref (international) and TR Dizin (Turkish).
 Fabricated references are derived from real ones by the corruptions that
 LLM-hallucinated citations typically show. The output is frozen to
-eval/data/refs.jsonl so every evaluation run uses the same cases.
+eval/data/<name>.jsonl so every evaluation run uses the same cases.
 
-Usage:  uv run --directory server python ../eval/build_dataset.py [--seed 7]
+Usage:  uv run --directory server python ../eval/build_dataset.py --name dev --seed 7
 """
 
 from __future__ import annotations
@@ -20,11 +20,18 @@ from pathlib import Path
 from akademik_ajan.http import build_url, fetch_json
 from akademik_ajan.verify import CROSSREF, Record, _trdizin_query, parse_crossref
 
-OUT = Path(__file__).parent / "data" / "refs.jsonl"
-TR_TOPICS = [
-    "siber güvenlik", "yapay zeka", "hemşirelik", "öğretmen adayları", "tarım ekonomisi",
-    "deprem", "turizm", "muhasebe", "veri madenciliği", "sosyal medya",
-]
+DATA = Path(__file__).parent / "data"
+# Disjoint topic lists keep the TR Dizin halves of the two sets independent.
+TR_TOPICS = {
+    "dev": [
+        "siber güvenlik", "yapay zeka", "hemşirelik", "öğretmen adayları", "tarım ekonomisi",
+        "deprem", "turizm", "muhasebe", "veri madenciliği", "sosyal medya",
+    ],
+    "holdout": [
+        "kimlik avı", "makine öğrenmesi", "diyabet", "matematik eğitimi", "hayvancılık",
+        "kentsel dönüşüm", "Osmanlı tarihi", "pazarlama", "büyük veri", "çocuk gelişimi",
+    ],
+}
 
 
 def usable(r: Record) -> bool:
@@ -43,9 +50,9 @@ def sample_crossref(n: int) -> list[Record]:
     return out[:n]
 
 
-def sample_trdizin(n: int, rng: random.Random) -> list[Record]:
+def sample_trdizin(n: int, rng: random.Random, topics: list[str]) -> list[Record]:
     out: list[Record] = []
-    for topic in TR_TOPICS:
+    for topic in topics:
         hits = [r for r in _trdizin_query(topic, fetch_json) if usable(r)]
         rng.shuffle(hits)
         out += hits[:3]
@@ -90,10 +97,11 @@ def main() -> None:
     ap.add_argument("--seed", type=int, default=7)
     ap.add_argument("--crossref", type=int, default=40)
     ap.add_argument("--trdizin", type=int, default=20)
+    ap.add_argument("--name", default="dev", help="dataset name, e.g. dev or holdout")
     args = ap.parse_args()
     rng = random.Random(args.seed)
 
-    reals = sample_crossref(args.crossref) + sample_trdizin(args.trdizin, rng)
+    reals = sample_crossref(args.crossref) + sample_trdizin(args.trdizin, rng, TR_TOPICS.get(args.name, TR_TOPICS["dev"]))
     cases = []
     for i, r in enumerate(reals):
         cases.append(as_case(r, "real", "with_doi"))
@@ -101,11 +109,12 @@ def main() -> None:
             cases.append(as_case(r, "real", "title_only", doi=None))
     cases += fabricate(reals, rng)
 
-    OUT.parent.mkdir(parents=True, exist_ok=True)
-    with OUT.open("w", encoding="utf-8") as f:
+    out = DATA / f"{args.name}.jsonl"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    with out.open("w", encoding="utf-8") as f:
         for c in cases:
             f.write(json.dumps(c, ensure_ascii=False) + "\n")
-    print(f"wrote {len(cases)} cases to {OUT}")
+    print(f"wrote {len(cases)} cases to {out}")
 
 
 if __name__ == "__main__":

@@ -8,7 +8,8 @@ An academic agent toolkit for [Claude Code](https://claude.com/claude-code), bui
 
 **Citation verification** (`verify-citations` skill + MCP server)
 
-- Checks a DOI, or a title/author/year, against **Crossref**, falling back to **OpenAlex**.
+- Checks a DOI, or a title/author/year, against **Crossref**, **TR Dizin** (Turkish national index) and **OpenAlex**.
+- Matches Turkish and English titles of the same bilingual article, and tolerant author-name layouts ("Last, F.", compound surnames).
 - Catches the classic fabricated reference: a plausible title attached to a real DOI that belongs to another paper (`mismatch`).
 - Verifies a whole `.bib` file in one call, including LaTeX-escaped Turkish characters.
 - Distinguishes "the service was unreachable" (`error`) from "this work does not exist" (`not_found`).
@@ -33,7 +34,12 @@ Inside Claude Code:
 
 The plugin writes nothing to your global settings. It adds one MCP server and one skill.
 
-Optional: set `AKADEMIK_AJAN_MAILTO=you@university.edu` so requests use Crossref's polite pool.
+Optional environment variables:
+
+| Variable | Effect |
+|---|---|
+| `AKADEMIK_AJAN_MAILTO` | Your e-mail; puts Crossref requests in its faster "polite pool" |
+| `OPENALEX_API_KEY` | Free OpenAlex key. Without it OpenAlex shares a small daily budget per IP address; when that runs out the verifier still works with Crossref and TR Dizin and reports OpenAlex under `unchecked_sources` |
 
 ## Develop
 

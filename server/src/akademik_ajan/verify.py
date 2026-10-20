@@ -101,6 +101,30 @@ def family_name(author: str) -> str:
     return parts[-1] if parts else ""
 
 
+def _name_tokens(name: str) -> set[str]:
+    return {t for t in _fold(name).split() if len(t) > 1}
+
+
+def author_matches(claimed: str, record_author: str) -> bool:
+    """True if a cited author name plausibly denotes a record's author.
+
+    Sources disagree on name layout: Crossref sometimes puts the full name in
+    the family field ("Nurul Hidayat"), compound surnames span several words
+    ("Ribas de Pouplana"), and citations may give "Last, F." or "First Last".
+    So the claimed family name may appear anywhere in the record's name, or
+    the record's family name anywhere in the claimed one.
+    """
+    claimed_family = _fold(family_name(claimed))
+    record_family = _fold(family_name(record_author))
+    if not claimed_family or not record_family:
+        return False
+    return (
+        claimed_family == record_family
+        or claimed_family in _name_tokens(record_author)
+        or record_family in _name_tokens(claimed)
+    )
+
+
 # --------------------------------------------------------------------------- #
 # Source parsers
 # --------------------------------------------------------------------------- #
@@ -227,16 +251,81 @@ def _openalex_search(title: str, rows: int, fetch: Fetcher) -> list[Record]:
 # --------------------------------------------------------------------------- #
 
 
+DOI_RESOLVERS = {"crossref": _crossref_doi, "openalex": _openalex_doi, "trdizin": _trdizin_doi}
+
+
+def _resolve_doi(
+    doi: str, fetch: Fetcher, skip: tuple[str, ...] = ()
+) -> tuple[list[Record], list[str]]:
+    """Ask resolvers in order; stop at the first hit. Returns (hits, unreachable sources)."""
+    hits: list[Record] = []
+    unreachable: list[str] = []
+    for name, resolver in DOI_RESOLVERS.items():
+        if name in skip:
+            continue
+        try:
+            record = resolver(doi, fetch)
+        except ConnectionError:
+            unreachable.append(name)
+            continue
+        if record is not None:
+            hits.append(record)
+            if not skip:  # primary lookup: first hit is enough
+                break
+    return hits, unreachable
+
+
 def lookup_doi(doi: str, fetch: Fetcher = fetch_json) -> Record | None:
-    """Resolve a DOI via Crossref, then OpenAlex, then TR Dizin. None if nobody knows it."""
+    """Resolve a DOI via Crossref, then OpenAlex, then TR Dizin. None if nobody knows it.
+
+    Raises ConnectionError when no source knew the DOI but at least one could not
+    be reached, because then "unknown DOI" would be an unproven claim.
+    """
     bare = normalize_doi(doi)
     if not bare:
         return None
-    for resolver in (_crossref_doi, _openalex_doi, _trdizin_doi):
-        record = resolver(bare, fetch)
-        if record is not None:
-            return record
+    hits, unreachable = _resolve_doi(bare, fetch)
+    if hits:
+        return hits[0]
+    if unreachable:
+        raise ConnectionError(f"Could not reach: {', '.join(unreachable)}")
     return None
+
+
+def _search(
+    title: str, authors: list[str] | None, year: int | None, rows: int, fetch: Fetcher
+) -> tuple[list[Record], list[str]]:
+    query = " ".join([title, *(family_name(a) for a in authors or [])])
+    if year:
+        query += f" {year}"
+
+    found: list[Record] = []
+    seen: set[str] = set()
+    unreachable: list[str] = []
+
+    def add(name: str, run) -> float:
+        try:
+            records = run()
+        except ConnectionError:
+            unreachable.append(name)
+            records = []
+        for r in records:
+            key = r.doi or f"{r.source}:{_fold(r.title)}"
+            if key not in seen:
+                seen.add(key)
+                found.append(r)
+        return max((best_title_similarity(title, r) for r in found), default=0.0)
+
+    best = add("crossref", lambda: _crossref_search(query, rows, fetch))
+    if best < TITLE_MATCH:
+        best = add("trdizin", lambda: _trdizin_query(title, fetch)[:rows])
+    if best < TITLE_MATCH:
+        add("openalex", lambda: _openalex_search(title, rows, fetch))
+
+    if not found and len(unreachable) == 3:
+        raise ConnectionError("Crossref, TR Dizin and OpenAlex were all unreachable.")
+    found.sort(key=lambda r: best_title_similarity(title, r), reverse=True)
+    return found, unreachable
 
 
 def search_works(
@@ -250,30 +339,9 @@ def search_works(
 
     Crossref is queried first. TR Dizin, then OpenAlex, are only consulted when
     nothing so far matches the title confidently, which keeps request volume low.
+    A source that cannot be reached is skipped.
     """
-    query = " ".join([title, *(family_name(a) for a in authors or [])])
-    if year:
-        query += f" {year}"
-
-    found: list[Record] = []
-    seen: set[str] = set()
-
-    def add(records: list[Record]) -> float:
-        for r in records:
-            key = r.doi or f"{r.source}:{_fold(r.title)}"
-            if key not in seen:
-                seen.add(key)
-                found.append(r)
-        return max((best_title_similarity(title, r) for r in found), default=0.0)
-
-    best = add(_crossref_search(query, rows, fetch))
-    if best < TITLE_MATCH:
-        best = add(_trdizin_query(title, fetch)[:rows])
-    if best < TITLE_MATCH:
-        add(_openalex_search(title, rows, fetch))
-
-    found.sort(key=lambda r: best_title_similarity(title, r), reverse=True)
-    return found
+    return _search(title, authors, year, rows, fetch)[0]
 
 
 # --------------------------------------------------------------------------- #
@@ -301,16 +369,16 @@ def _compare(
         add("title", level, f"similarity {sim} (record: {record.title!r})")
 
     if authors:
-        claimed = _fold(family_name(authors[0]))
-        found = [_fold(a) for a in record.authors if a]
+        found = [a for a in record.authors if a]
+        position = next((i for i, a in enumerate(found) if author_matches(authors[0], a)), None)
         if not found:
             add("first_author", "warn", "record lists no authors")
-        elif claimed == found[0]:
-            add("first_author", "ok", f"{record.authors[0]}")
-        elif claimed in found:
+        elif position == 0:
+            add("first_author", "ok", f"{found[0]}")
+        elif position is not None:
             add("first_author", "warn", f"{authors[0]!r} is an author but not first")
         else:
-            add("first_author", "fail", f"{authors[0]!r} not among {record.authors[:6]}")
+            add("first_author", "fail", f"{authors[0]!r} not among {found[:6]}")
 
     if year:
         if record.year is None:
@@ -358,16 +426,24 @@ def verify_reference(
                     "doi": bare,
                     "message": "Neither Crossref, OpenAlex nor TR Dizin knows this DOI.",
                 }
+            if title and best_title_similarity(title, record) < TITLE_MATCH:
+                # Bilingual journals: one source may hold only the Turkish title and
+                # the citation may use the English one. Pull the other sources'
+                # versions of the same DOI before calling it a mismatch.
+                others, _ = _resolve_doi(bare, fetch, skip=(record.source,))
+                for other in others:
+                    record.alt_titles += [t for t in other.titles() if t not in record.titles()]
             checks, worst = _compare(record, title, authors, year)
             status = {"ok": "verified", "warn": "partial_match", "fail": "mismatch"}[worst]
             return {"status": status, "doi": bare, "record": record.to_dict(), "checks": checks}
 
-        candidates = search_works(title or "", authors, year, fetch=fetch)
+        candidates, unreachable = _search(title or "", authors, year, 5, fetch)
     except ConnectionError as exc:
         return {"status": "error", "message": str(exc)}
 
+    extra = {"unchecked_sources": unreachable} if unreachable else {}
     if not candidates:
-        return {"status": "not_found", "message": "No candidates returned."}
+        return {"status": "not_found", "message": "No candidates returned.", **extra}
 
     # Rank by title, then let author/year break near-ties between versions of a work.
     def score(r: Record) -> tuple[float, int]:
@@ -395,4 +471,5 @@ def verify_reference(
         "record": best.to_dict(),
         "checks": checks,
         "alternatives": alternatives,
+        **extra,
     }

@@ -85,6 +85,52 @@ def test_trdizin_finds_turkish_paper_by_its_turkish_title(fetcher):
     assert r["record"]["url"].endswith("/424242")
 
 
+def test_author_name_layouts():
+    from akademik_ajan.verify import author_matches
+    assert author_matches("Nurul Hidayat", "Nurul Hidayat")      # full name in family field
+    assert author_matches("Hidayat, N.", "Nurul Hidayat")
+    assert author_matches("Lluís Ribas de Pouplana", "Ribas de Pouplana")
+    assert author_matches("Osman Can ÇETLENBİK", "Çetlenbik")
+    assert not author_matches("Smith, J.", "Smithson")
+    assert not author_matches("Kaya", "Yılmaz")
+
+
+def test_bilingual_title_resolved_via_second_source():
+    # Crossref holds only the Turkish title; the citation uses the English one,
+    # which TR Dizin knows for the same DOI.
+    crossref = {"DOI": "10.5505/jems.2019.85057",
+                "title": ["Deniz Siber Güvenlik Bilincinin Öncülleri ve Sonuçları"],
+                "author": [{"family": "Bolat"}], "issued": {"date-parts": [[2019]]}}
+    trdizin = {"id": 1, "doi": "10.5505/jems.2019.85057", "publicationYear": 2019,
+               "abstracts": [{"title": "Deniz Siber Güvenlik Bilincinin Öncülleri ve Sonuçları"},
+                             {"title": "Antecedents and Outcomes of Maritime Cyber Security Awareness"}],
+               "authors": [{"name": "Pelin BOLAT", "order": 1}]}
+    f = FakeFetcher({"https://api.crossref.org/works/10.5505/jems.2019.85057": (200, {"message": crossref})},
+                    trdizin=[trdizin])
+    r = verify_reference(title="Antecedents and outcomes of maritime cyber security awareness",
+                         authors=["Bolat, P."], year=2019, doi="10.5505/jems.2019.85057", fetch=f)
+    assert r["status"] == "verified"
+
+
+def test_unreachable_fallback_does_not_sink_the_result(fetcher):
+    def flaky(url):
+        if "openalex.org" in url:
+            raise ConnectionError("budget exhausted")
+        return fetcher(url)
+    r = verify_reference(title="Quantum blockchain for medieval poetry", fetch=flaky)
+    assert r["status"] == "not_found"
+    assert r["unchecked_sources"] == ["openalex"]
+
+
+def test_unknown_doi_with_unreachable_source_is_error_not_fabrication(fetcher):
+    def flaky(url):
+        if "trdizin.gov.tr" in url:
+            raise ConnectionError("down")
+        return fetcher(url)
+    r = verify_reference(title="X", doi="10.5555/nobody.knows", fetch=flaky)
+    assert r["status"] == "error"
+
+
 def test_doi_known_only_to_trdizin(fetcher):
     rec = lookup_doi("https://doi.org/10.17341/TR.ONLY.2019", fetch=fetcher)
     assert rec is not None and rec.source == "trdizin"
