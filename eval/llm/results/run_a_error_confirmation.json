@@ -1,0 +1,51 @@
+[
+ {
+  "ref_id": "A000",
+  "model": "haiku",
+  "cited_title": "Learning to detect phishing emails",
+  "cited_doi": "10.1145/1242572.1242643",
+  "doi_resolves_to": "Predicting clicks",
+  "title_similarity": 0.314,
+  "confirmed": true,
+  "adjudicator_wrong_fields": [
+   "doi"
+  ]
+ },
+ {
+  "ref_id": "A023",
+  "model": "haiku",
+  "cited_title": "Adaptive strategies for learning in nonstationary environments: a survey",
+  "cited_doi": "10.1109/MCI.2015.2471196",
+  "doi_resolves_to": "Learning in Nonstationary Environments: A Survey",
+  "title_similarity": 0.797,
+  "confirmed": true,
+  "adjudicator_wrong_fields": [
+   "title"
+  ]
+ },
+ {
+  "ref_id": "A018",
+  "model": "haiku",
+  "cited_title": "On the anatomy of social engineering attacks: A literature-based dissection of successful attacks",
+  "cited_doi": "10.1016/j.chb.2015.08.036",
+  "doi_resolves_to": "Design based on fuzzy signal detection theory for a semi-autonomous assisting robot in children autism therapy",
+  "title_similarity": 0.282,
+  "confirmed": true,
+  "adjudicator_wrong_fields": [
+   "doi",
+   "venue"
+  ]
+ },
+ {
+  "ref_id": "A027",
+  "model": "haiku",
+  "cited_title": "INSOMNIA: Towards concept-drift robustness in network intrusion detection",
+  "cited_doi": "10.1145/3474369.3486872",
+  "doi_resolves_to": "FedV",
+  "title_similarity": 0.026,
+  "confirmed": true,
+  "adjudicator_wrong_fields": [
+   "doi"
+  ]
+ }
+]

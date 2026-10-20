@@ -27,6 +27,7 @@ HERE = Path(__file__).parent
 RES = HERE / "results"
 MODELS = ["haiku", "sonnet", "opus"]
 ACCEPT = {"verified"}  # strict: anything else is shown to the user as a problem
+ACCEPT_LENIENT = {"verified", "partial_match"}  # minor differences (e.g. year +-1) accepted
 
 
 def wilson(k: int, n: int, z: float = 1.96) -> list[float] | None:
@@ -116,15 +117,18 @@ def main() -> None:
     def truth(i: str) -> bool:
         return labels[i]["label"] == "correct" if i in labels else True
 
-    for tag, refs in (("v010", refs_old), ("current", refs_new)):
-        tp = sum(1 for r in refs if not truth(r["ref_id"]) and r["status"] not in ACCEPT)
-        fn = sum(1 for r in refs if not truth(r["ref_id"]) and r["status"] in ACCEPT)
-        fp = sum(1 for r in refs if truth(r["ref_id"]) and r["status"] not in ACCEPT)
-        tn = sum(1 for r in refs if truth(r["ref_id"]) and r["status"] in ACCEPT)
+    for (tag, refs), (mode, accept) in [
+        (tr, md) for tr in (("v010", refs_old), ("current", refs_new))
+        for md in (("strict", ACCEPT), ("lenient", ACCEPT_LENIENT))
+    ]:
+        tp = sum(1 for r in refs if not truth(r["ref_id"]) and r["status"] not in accept)
+        fn = sum(1 for r in refs if not truth(r["ref_id"]) and r["status"] in accept)
+        fp = sum(1 for r in refs if truth(r["ref_id"]) and r["status"] not in accept)
+        tn = sum(1 for r in refs if truth(r["ref_id"]) and r["status"] in accept)
         mism = [r for r in refs if r["status"] == "mismatch"]
         mism_ok = sum(not truth(r["ref_id"]) for r in mism)
-        fp_ids = [r["ref_id"] for r in refs if truth(r["ref_id"]) and r["status"] not in ACCEPT]
-        n[f"verifier_{tag}"] = {
+        fp_ids = [r["ref_id"] for r in refs if truth(r["ref_id"]) and r["status"] not in accept]
+        n[f"verifier_{tag}_{mode}"] = {
             "tp": tp, "fn": fn, "fp": fp, "tn": tn,
             "recall": round(tp / (tp + fn), 4) if tp + fn else None,
             "recall_ci95": wilson(tp, tp + fn),
@@ -136,6 +140,20 @@ def main() -> None:
             "false_alarms_openalex_unchecked": sum(1 for r in refs if r["ref_id"] in fp_ids
                                                    and "openalex" in r.get("unchecked_sources", [])),
         }
+
+    # 5. Kind of venue among current strict false alarms (keyword rule on the cited venue).
+    conf_words = ("proceedings", "conference", "symposium", "workshop", "neurips", "iclr", "usenix",
+                  "ndss", "aaai", "emnlp", "acl", "chi", "ccs", "milcom", "aistats", "icissp",
+                  "milcis", "naacl", "lncs", "lecture notes")
+    fa = [r for r in refs_new if truth(r["ref_id"]) and r["status"] not in ACCEPT]
+    n["false_alarms_current_strict_conference"] = sum(
+        any(w in (r.get("venue") or "").lower() for w in conf_words) for r in fa)
+
+    conf_path = RES / "run_a_error_confirmation.json"
+    if conf_path.exists():
+        conf = json.loads(conf_path.read_text(encoding="utf-8"))
+        n["errors_confirmed_against_crossref"] = {"confirmed": sum(c["confirmed"] for c in conf),
+                                                   "checked": len(conf)}
 
     (HERE / "numbers.json").write_text(json.dumps(n, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(n, indent=2, ensure_ascii=False))

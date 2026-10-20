@@ -1,36 +1,36 @@
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en1", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en2", "lang": "en", "request_status": "complied", "n_refs": 11, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en3", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en4", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en5", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en6", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr1", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr2", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr3", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr4", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr5", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr6", "lang": "tr", "request_status": "partial", "n_refs": 1, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en1", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en2", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en3", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en4", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en5", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en6", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr1", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr2", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr3", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr4", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr5", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr6", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en1", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en2", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en3", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en4", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en5", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en6", "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr1", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr2", "lang": "tr", "request_status": "partial", "n_refs": 2, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr3", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr4", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr5", "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
-{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr6", "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en1", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en2", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 11, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en3", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en4", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en5", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "en6", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr1", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr2", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr3", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr4", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr5", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "haiku", "served_model": ["claude-haiku-5-5"], "topic_id": "tr6", "repeat": 0, "lang": "tr", "request_status": "partial", "n_refs": 1, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en1", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en2", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en3", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en4", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en5", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "en6", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr1", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr2", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr3", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr4", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr5", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "sonnet", "served_model": ["claude-sonnet-5-5"], "topic_id": "tr6", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en1", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en2", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en3", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en4", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en5", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "en6", "repeat": 0, "lang": "en", "request_status": "complied", "n_refs": 10, "prose_suggestions": false}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr1", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr2", "repeat": 0, "lang": "tr", "request_status": "partial", "n_refs": 2, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr3", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr4", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr5", "repeat": 0, "lang": "tr", "request_status": "abstained", "n_refs": 0, "prose_suggestions": true}
+{"model": "opus", "served_model": ["claude-opus-5-5"], "topic_id": "tr6", "repeat": 0, "lang": "tr", "request_status": "no_json", "n_refs": 0, "prose_suggestions": true}

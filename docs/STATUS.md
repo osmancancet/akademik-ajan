@@ -2,7 +2,7 @@
 
 Single source of truth for what works. Anything not listed as **working** does not exist yet.
 
-_Last updated: 2026-10-20 · v0.1.0_
+_Last updated: 2026-10-20 · v0.2.0_
 
 | Component | State | Evidence |
 |---|---|---|
@@ -15,7 +15,10 @@ _Last updated: 2026-10-20 · v0.1.0_
 | Rate-limit handling (429/503, quota) | working | unit tests |
 | `verify-citations` skill | working | manual review; not yet evaluated end-to-end inside Claude Code |
 | Claim ↔ abstract support check | partial | done by the model from `lookup_doi` abstracts; no automated eval yet |
-| Literature review module | planned | — |
+| `search_literature` (Crossref + TR Dizin + OpenAlex, merge, relevance) | working | unit tests (`test_literature.py`); live smoke test 2026-10-20 |
+| `export_bibtex` | working | unit tests incl. LaTeX escaping, Turkish characters, unique keys; live smoke test |
+| `literature-review` skill | working | manual review; not yet evaluated end-to-end inside Claude Code |
+| Verifier on LLM-written references | measured (pilot) | [`eval/llm/REPORT.md`](../eval/llm/REPORT.md): blind web adjudication of run A |
 | Reviewer-response module | planned | — |
 | Journal compliance module | planned | — |
 | TR↔EN terminology module | planned | — |
@@ -39,8 +42,14 @@ Two disjoint sets of 150 cases each: 90 real references (60 sampled from Crossre
 - Title-only search for some TR Dizin works returns `not_found` (3 of 20 across both sets) — short or generic Turkish titles where the search ranks other works higher.
 - One dev case: a TR Dizin record whose Crossref and TR Dizin titles differ beyond the similarity threshold.
 
+## LLM-written references (run A pilot)
+
+See [`eval/llm/REPORT.md`](../eval/llm/REPORT.md), generated from `eval/llm/numbers.json`. In short: under the strict rule the verifier flagged every reference the adjudicators found wrong, and its main weakness is false alarms on conference papers cited without a DOI when OpenAlex is unavailable. Run B (clean API condition) is pending.
+
 ## Known limitations
 
+- Without `OPENALEX_API_KEY`, conference papers without a DOI (NeurIPS, ICLR, USENIX) are often `not_found` or `possible_match`: the main source of false alarms in the LLM study.
+- Literature search relevance is lexical; Crossref's candidate pool for multi-word Turkish queries can be noisy, so the skill runs several query variants and screens abstracts.
 - Title similarity uses `difflib`; very short or generic titles ("Introduction") can produce false `possible_match`.
 - Crossref's year can differ from the print year by one; reported as `partial_match`, not failure.
 - Works only on DergiPark (not in TR Dizin) and theses (YÖK Tez) cannot be checked automatically — see ADR-0002.
@@ -48,4 +57,4 @@ Two disjoint sets of 150 cases each: 90 real references (60 sampled from Crossre
 ## Not yet measured
 
 - Token/latency overhead of the plugin in a Claude Code session.
-- Detection rate on real LLM-generated reference lists.
+- Detection rate on LLM-generated reference lists in the clean API condition (run B); run A is a pilot in agent context.

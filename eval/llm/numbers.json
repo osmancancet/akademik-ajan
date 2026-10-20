@@ -1,0 +1,260 @@
+{
+  "run": "run_a_project_context",
+  "requests": {
+    "haiku_en": {
+      "complied": 6
+    },
+    "haiku_tr": {
+      "abstained": 5,
+      "partial": 1
+    },
+    "sonnet_en": {
+      "complied": 6
+    },
+    "sonnet_tr": {
+      "no_json": 2,
+      "abstained": 4
+    },
+    "opus_en": {
+      "complied": 6
+    },
+    "opus_tr": {
+      "no_json": 4,
+      "partial": 1,
+      "abstained": 1
+    }
+  },
+  "served_models": [
+    "claude-haiku-5-5",
+    "claude-opus-5-5",
+    "claude-sonnet-5-5"
+  ],
+  "references_total": 184,
+  "references_by_model_lang": {
+    "haiku_en": 61,
+    "haiku_tr": 1,
+    "sonnet_en": 60,
+    "sonnet_tr": 0,
+    "opus_en": 60,
+    "opus_tr": 2
+  },
+  "with_doi_share": 0.7446,
+  "status_v010": {
+    "mismatch": 4,
+    "verified": 142,
+    "partial_match": 14,
+    "possible_match": 10,
+    "not_found": 14
+  },
+  "status_v010_by_model": {
+    "haiku": {
+      "mismatch": 4,
+      "verified": 47,
+      "partial_match": 5,
+      "possible_match": 3,
+      "not_found": 3
+    },
+    "sonnet": {
+      "verified": 46,
+      "possible_match": 4,
+      "not_found": 6,
+      "partial_match": 4
+    },
+    "opus": {
+      "possible_match": 3,
+      "verified": 49,
+      "partial_match": 5,
+      "not_found": 5
+    }
+  },
+  "status_current": {
+    "mismatch": 3,
+    "verified": 147,
+    "possible_match": 10,
+    "partial_match": 10,
+    "not_found": 14
+  },
+  "status_current_by_model": {
+    "haiku": {
+      "mismatch": 3,
+      "verified": 50,
+      "possible_match": 3,
+      "partial_match": 3,
+      "not_found": 3
+    },
+    "sonnet": {
+      "verified": 47,
+      "possible_match": 4,
+      "not_found": 6,
+      "partial_match": 3
+    },
+    "opus": {
+      "possible_match": 3,
+      "verified": 50,
+      "partial_match": 4,
+      "not_found": 5
+    }
+  },
+  "adjudication": {
+    "sample_size": 72,
+    "design": "all v0.1.0-flagged references plus a random sample of v0.1.0-verified ones",
+    "flagged_in_sample": 42,
+    "verified_population": 142,
+    "verified_sampled": 30,
+    "verified_sampled_wrong": 0,
+    "verified_error_ci95": [
+      0.0,
+      0.1135
+    ],
+    "labels": {
+      "correct": 68,
+      "exists_with_errors": 4
+    }
+  },
+  "errors": {
+    "count": 4,
+    "fabricated_count": 0,
+    "wrong_fields": {
+      "doi": 3,
+      "title": 1,
+      "venue": 1
+    },
+    "by_model": {
+      "haiku": 4,
+      "sonnet": 0,
+      "opus": 0
+    },
+    "rate_by_model": {
+      "haiku": {
+        "k": 4,
+        "n": 62,
+        "ci95": [
+          0.0254,
+          0.1545
+        ]
+      },
+      "sonnet": {
+        "k": 0,
+        "n": 60,
+        "ci95": [
+          0.0,
+          0.0602
+        ]
+      },
+      "opus": {
+        "k": 0,
+        "n": 62,
+        "ci95": [
+          0.0,
+          0.0583
+        ]
+      }
+    },
+    "note": "unsampled v0.1.0-verified references are assumed correct; see verified_error_ci95"
+  },
+  "verifier_v010_strict": {
+    "tp": 4,
+    "fn": 0,
+    "fp": 38,
+    "tn": 142,
+    "recall": 1.0,
+    "recall_ci95": [
+      0.5101,
+      1.0
+    ],
+    "false_alarm_rate": 0.2111,
+    "false_alarm_ci95": [
+      0.1578,
+      0.2764
+    ],
+    "mismatch_flags": 4,
+    "mismatch_true_errors": 3,
+    "false_alarms_by_status": {
+      "partial_match": 13,
+      "possible_match": 10,
+      "mismatch": 1,
+      "not_found": 14
+    },
+    "false_alarms_without_doi": 24,
+    "false_alarms_openalex_unchecked": 17
+  },
+  "verifier_v010_lenient": {
+    "tp": 3,
+    "fn": 1,
+    "fp": 25,
+    "tn": 155,
+    "recall": 0.75,
+    "recall_ci95": [
+      0.3006,
+      0.9544
+    ],
+    "false_alarm_rate": 0.1389,
+    "false_alarm_ci95": [
+      0.0959,
+      0.197
+    ],
+    "mismatch_flags": 4,
+    "mismatch_true_errors": 3,
+    "false_alarms_by_status": {
+      "possible_match": 10,
+      "mismatch": 1,
+      "not_found": 14
+    },
+    "false_alarms_without_doi": 24,
+    "false_alarms_openalex_unchecked": 17
+  },
+  "verifier_current_strict": {
+    "tp": 4,
+    "fn": 0,
+    "fp": 33,
+    "tn": 147,
+    "recall": 1.0,
+    "recall_ci95": [
+      0.5101,
+      1.0
+    ],
+    "false_alarm_rate": 0.1833,
+    "false_alarm_ci95": [
+      0.1336,
+      0.2463
+    ],
+    "mismatch_flags": 3,
+    "mismatch_true_errors": 3,
+    "false_alarms_by_status": {
+      "possible_match": 10,
+      "partial_match": 9,
+      "not_found": 14
+    },
+    "false_alarms_without_doi": 24,
+    "false_alarms_openalex_unchecked": 16
+  },
+  "verifier_current_lenient": {
+    "tp": 3,
+    "fn": 1,
+    "fp": 24,
+    "tn": 156,
+    "recall": 0.75,
+    "recall_ci95": [
+      0.3006,
+      0.9544
+    ],
+    "false_alarm_rate": 0.1333,
+    "false_alarm_ci95": [
+      0.0913,
+      0.1907
+    ],
+    "mismatch_flags": 3,
+    "mismatch_true_errors": 3,
+    "false_alarms_by_status": {
+      "possible_match": 10,
+      "not_found": 14
+    },
+    "false_alarms_without_doi": 24,
+    "false_alarms_openalex_unchecked": 16
+  },
+  "false_alarms_current_strict_conference": 30,
+  "errors_confirmed_against_crossref": {
+    "confirmed": 4,
+    "checked": 4
+  }
+}
