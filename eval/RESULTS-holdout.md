@@ -1,10 +1,10 @@
 # Evaluation results: holdout set
 
-_akademik-ajan 0.1.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
+_akademik-ajan 0.2.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
 
 | Metric | All | Crossref sample | TR Dizin sample |
 |---|---|---|---|
-| Real references accepted | 89/90 (99%) | 60/60 (100%) | 29/30 (97%) |
+| Real references accepted | 88/90 (98%) | 60/60 (100%) | 28/30 (93%) |
 | Fabricated references caught | 60/60 (100%) | 40/40 (100%) | 20/20 (100%) |
 
 ## By case type
@@ -22,7 +22,7 @@ _akademik-ajan 0.1.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
 | fake | wrong_year | crossref | 8 | mismatch: 8 |
 | fake | wrong_year | trdizin | 4 | mismatch: 4 |
 | real | title_only | crossref | 20 | verified: 20 |
-| real | title_only | trdizin | 10 | verified: 9, not_found: 1 |
+| real | title_only | trdizin | 10 | verified: 8, not_found: 2 |
 | real | with_doi | crossref | 40 | verified: 40 |
 | real | with_doi | trdizin | 20 | verified: 18, partial_match: 2 |
 
