@@ -1,0 +1,29 @@
+# Evaluation results: dev set
+
+_akademik-ajan 0.1.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
+
+| Metric | All | Crossref sample | TR Dizin sample |
+|---|---|---|---|
+| Real references accepted | 86/90 (96%) | 59/60 (98%) | 27/30 (90%) |
+| Fabricated references caught | 60/60 (100%) | 40/40 (100%) | 20/20 (100%) |
+
+## By case type
+
+| label | kind | origin | n | statuses |
+|---|---|---|---|---|
+| fake | borrowed_doi | crossref | 8 | mismatch: 8 |
+| fake | borrowed_doi | trdizin | 4 | mismatch: 4 |
+| fake | fake_title | crossref | 8 | mismatch: 8 |
+| fake | fake_title | trdizin | 4 | mismatch: 4 |
+| fake | invented_doi | crossref | 8 | doi_not_found: 8 |
+| fake | invented_doi | trdizin | 4 | doi_not_found: 4 |
+| fake | invented_work | crossref | 8 | not_found: 8 |
+| fake | invented_work | trdizin | 4 | not_found: 4 |
+| fake | wrong_year | crossref | 8 | mismatch: 8 |
+| fake | wrong_year | trdizin | 4 | mismatch: 4 |
+| real | title_only | crossref | 20 | verified: 19, possible_match: 1 |
+| real | title_only | trdizin | 10 | verified: 8, not_found: 2 |
+| real | with_doi | crossref | 40 | verified: 40 |
+| real | with_doi | trdizin | 20 | verified: 19, mismatch: 1 |
+
+Fabricated cases are synthetic corruptions of real records (see `build_dataset.py`), not citations produced by a language model. They model the common failure types but are not a substitute for an evaluation on real LLM output.
