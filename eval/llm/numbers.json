@@ -226,7 +226,7 @@
       "not_found": 14
     },
     "false_alarms_without_doi": 24,
-    "false_alarms_openalex_unchecked": 16
+    "false_alarms_openalex_unchecked": 17
   },
   "verifier_current_lenient": {
     "tp": 3,
@@ -250,7 +250,7 @@
       "not_found": 14
     },
     "false_alarms_without_doi": 24,
-    "false_alarms_openalex_unchecked": 16
+    "false_alarms_openalex_unchecked": 17
   },
   "false_alarms_current_strict_conference": 30,
   "errors_confirmed_against_crossref": {
