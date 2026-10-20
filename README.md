@@ -72,7 +72,7 @@ See [docs/adr/0001-scope-and-principles.md](docs/adr/0001-scope-and-principles.m
 
 ## Roadmap
 
-1. ✅ Citation verifier — live eval on an unseen set: 99% of real references accepted, 100% of synthetic fabrications caught ([details](docs/STATUS.md#live-evaluation-2026-10-20))
+1. ✅ Citation verifier: on synthetic test sets every corrupted reference is caught; on references written by language models the main open issue is false alarms on conference papers without a DOI ([status](docs/STATUS.md), [study](eval/llm/REPORT.md))
 2. ✅ Literature review: search → BibTeX → review table
 3. Reviewer-response assistant
 4. Journal compliance check (APA/IEEE, word limits, structure)

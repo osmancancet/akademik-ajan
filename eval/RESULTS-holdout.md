@@ -4,7 +4,7 @@ _akademik-ajan 0.2.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
 
 | Metric | All | Crossref sample | TR Dizin sample |
 |---|---|---|---|
-| Real references accepted | 88/90 (98%) | 60/60 (100%) | 28/30 (93%) |
+| Real references accepted | 90/90 (100%) | 60/60 (100%) | 30/30 (100%) |
 | Fabricated references caught | 60/60 (100%) | 40/40 (100%) | 20/20 (100%) |
 
 ## By case type
@@ -22,7 +22,7 @@ _akademik-ajan 0.2.0 · run 2026-10-20 · 150 cases · errors excluded: 0_
 | fake | wrong_year | crossref | 8 | mismatch: 8 |
 | fake | wrong_year | trdizin | 4 | mismatch: 4 |
 | real | title_only | crossref | 20 | verified: 20 |
-| real | title_only | trdizin | 10 | verified: 8, not_found: 2 |
+| real | title_only | trdizin | 10 | verified: 10 |
 | real | with_doi | crossref | 40 | verified: 40 |
 | real | with_doi | trdizin | 20 | verified: 18, partial_match: 2 |
 

@@ -33,6 +33,8 @@ Two disjoint sets of 150 cases each: 90 real references (60 sampled from Crossre
 | Fabricated references caught | 60/60 (100%) | **60/60 (100%)** |
 | Service errors | 0 | 0 |
 
+Re-run with v0.2.0 (2026-10-20): holdout 90/90 real accepted, 60/60 fabricated caught, 0 errors. A first v0.2.0 run gave 88/90 and exposed a bug (a TR Dizin duplicate carrying the English title was dropped), which was fixed. Because that fix came from a holdout case, the holdout set is no longer fully unseen; the 90/90 figure is optimistic.
+
 "Caught" includes `possible_match` (one holdout case), which asks the user to confirm rather than accepting. Details: [`eval/RESULTS-dev.md`](../eval/RESULTS-dev.md), [`eval/RESULTS-holdout.md`](../eval/RESULTS-holdout.md). Reproduce with `eval/build_dataset.py` and `eval/run_eval.py`.
 
 **Caveat:** fabricated cases are synthetic corruptions of real records, not citations written by a language model. An evaluation on real LLM-generated reference lists is the next step before claiming real-world detection rates.
