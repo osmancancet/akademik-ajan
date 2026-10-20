@@ -7,7 +7,7 @@ from typing import Any
 import anyio
 from mcp.server.mcpserver import MCPServer
 
-from . import __version__, bibtex, literature, verify
+from . import __version__, bibtex, literature, response, verify
 
 mcp = MCPServer(
     name="akademik-ajan",
@@ -91,6 +91,18 @@ async def search_literature(
 async def export_bibtex(dois: list[str]) -> dict[str, Any]:
     """Generate BibTeX entries for DOIs from the registry records (never from memory)."""
     return await anyio.to_thread.run_sync(lambda: literature.export_bibtex(dois))
+
+
+@mcp.tool()
+async def render_response_letter(data: dict[str, Any], fmt: str = "markdown") -> dict[str, Any]:
+    """Lay out a response-to-reviewers letter (Markdown or LaTeX) and a change-log table.
+
+    `data` holds the title and, per reviewer, numbered points with the verbatim comment,
+    the response, the changes and their location, and a status (addressed,
+    partially_addressed, not_addressed, author_action). The result includes a `check`
+    listing empty responses, placeholders and points that still need the authors.
+    """
+    return response.render_response_letter(data, fmt)
 
 
 def main() -> None:

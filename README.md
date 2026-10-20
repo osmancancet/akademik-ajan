@@ -32,6 +32,15 @@ An academic agent toolkit for [Claude Code](https://claude.com/claude-code), bui
 | `search_literature` | Topic search with year range; merged, de-duplicated works with provenance and relevance |
 | `export_bibtex` | BibTeX entries for a list of DOIs |
 
+**Reviewer response** (`reviewer-response` skill)
+
+- Splits reviews into numbered points with verbatim quotes, drafts point-by-point replies tied to manuscript locations, and keeps points that need new work on an author to-do list instead of inventing results.
+- Citations requested by reviewers go through `search_literature` and `verify_reference`.
+
+| Tool | Purpose |
+|---|---|
+| `render_response_letter` | Markdown or LaTeX letter plus change log; checks for empty replies, placeholders and pending author actions |
+
 ## Install
 
 Requires [uv](https://docs.astral.sh/uv/) and Python ≥ 3.11.
@@ -43,7 +52,7 @@ Inside Claude Code:
 /plugin install akademik-ajan@akademik-ajan
 ```
 
-The plugin writes nothing to your global settings. It adds one MCP server and two skills.
+The plugin writes nothing to your global settings. It adds one MCP server and three skills.
 
 Optional environment variables:
 
@@ -74,7 +83,7 @@ See [docs/adr/0001-scope-and-principles.md](docs/adr/0001-scope-and-principles.m
 
 1. ✅ Citation verifier: on synthetic test sets every corrupted reference is caught; on references written by language models the main open issue is false alarms on conference papers without a DOI ([status](docs/STATUS.md), [study](eval/llm/REPORT.md))
 2. ✅ Literature review: search → BibTeX → review table
-3. Reviewer-response assistant
+3. ✅ Reviewer-response assistant
 4. Journal compliance check (APA/IEEE, word limits, structure)
 5. Turkish ↔ English academic terminology consistency
 

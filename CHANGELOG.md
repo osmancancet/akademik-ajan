@@ -3,6 +3,7 @@
 ## 0.2.0 — 2026-10-20
 
 ### Added
+- **Reviewer response module.** `render_response_letter` tool (Markdown or LaTeX letter, change log, completeness check with an author to-do list) and `reviewer-response` skill.
 - **Literature review module.** `search_literature` (Crossref, TR Dizin, OpenAlex; merged, de-duplicated, with provenance and a lexical relevance score that handles Turkish suffixes) and `export_bibtex` (BibTeX built field by field from registry records). New `literature-review` skill.
 - **TR Dizin** as a verification source (DOI and title search; bilingual titles matched).
 - **LLM reference study** (`eval/llm/`): fixed protocol, raw outputs, scorer, blind web adjudication, `analyze.py` producing `numbers.json`, and `generate.py` for the clean API condition.

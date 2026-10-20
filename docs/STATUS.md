@@ -19,7 +19,8 @@ _Last updated: 2026-10-20 · v0.2.0_
 | `export_bibtex` | working | unit tests incl. LaTeX escaping, Turkish characters, unique keys; live smoke test |
 | `literature-review` skill | working | manual review; not yet evaluated end-to-end inside Claude Code |
 | Verifier on LLM-written references | measured (pilot) | [`eval/llm/REPORT.md`](../eval/llm/REPORT.md): blind web adjudication of run A |
-| Reviewer-response module | planned | — |
+| `render_response_letter` (Markdown/LaTeX letter, change log, completeness check) | working | unit tests (`test_response.py`); MCP call test |
+| `reviewer-response` skill | working | manual review; not yet evaluated end-to-end inside Claude Code |
 | Journal compliance module | planned | — |
 | TR↔EN terminology module | planned | — |
 
