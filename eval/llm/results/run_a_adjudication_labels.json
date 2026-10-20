@@ -1,0 +1,515 @@
+[
+ {
+  "ref_id": "A013",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1177/0093650215627483",
+  "note": "DOI resolves to the SCAM paper by Vishwanath, Harrison, Ng; online 2016, print issue 2018."
+ },
+ {
+  "ref_id": "A031",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.18653/v1/P18-2006",
+  "note": "DOI matches HotFlip, ACL 2018 short papers."
+ },
+ {
+  "ref_id": "A085",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://usenix.org/conference/usenixsecurity22/presentation/arp",
+  "note": "Published at USENIX Security 2022 by Arp et al."
+ },
+ {
+  "ref_id": "A092",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://arxiv.org/abs/1412.6572",
+  "note": "Goodfellow, Shlens, Szegedy, ICLR 2015 (arXiv 1412.6572)."
+ },
+ {
+  "ref_id": "A132",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1002/asi.20779",
+  "note": "DOI matches Workman, JASIST 2008 (online Dec 2007)."
+ },
+ {
+  "ref_id": "A072",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1002/asi.20779",
+  "note": "DOI matches Workman, JASIST 2008 (online Dec 2007)."
+ },
+ {
+  "ref_id": "A065",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://arxiv.org/abs/1910.01108",
+  "note": "DistilBERT by Sanh et al., 2019, EMC2 workshop at NeurIPS 2019."
+ },
+ {
+  "ref_id": "A021",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/SP.2010.25",
+  "note": "DOI matches Sommer and Paxson, IEEE S&P 2010."
+ },
+ {
+  "ref_id": "A134",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/1753326.1753383",
+  "note": "DOI matches Sheng et al., CHI 2010."
+ },
+ {
+  "ref_id": "A111",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1561/2200000083",
+  "note": "DOI matches Kairouz et al., FnTML 2021; author list truncated but correct."
+ },
+ {
+  "ref_id": "A052",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.7759/cureus.35179",
+  "note": "DOI matches Alkaissi and McFarlane, Cureus 2023."
+ },
+ {
+  "ref_id": "A110",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3133956.3134012",
+  "note": "DOI matches Hitaj et al., CCS 2017."
+ },
+ {
+  "ref_id": "A003",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1007/s11235-020-00733-2",
+  "note": "DOI matches Basit et al., Telecommunication Systems (online 2020, print 2021)."
+ },
+ {
+  "ref_id": "A048",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3338501.3357370",
+  "note": "DOI matches Truex et al., AISec 2019."
+ },
+ {
+  "ref_id": "A144",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/TKDE.2018.2876857",
+  "note": "DOI matches Lu et al., TKDE (online 2018, print 2019)."
+ },
+ {
+  "ref_id": "A064",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.neurips.cc/paper/2020/hash/1457c0d6bfcb4967418bfb8ac142f64a-Abstract.html",
+  "note": "Brown et al., NeurIPS 2020."
+ },
+ {
+  "ref_id": "A163",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.neurips.cc/paper_files/paper/2020/file/c4ede56bbd98819ae6112b20ac6bf145-Paper.pdf",
+  "note": "Geiping et al., NeurIPS 2020."
+ },
+ {
+  "ref_id": "A022",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/2523813",
+  "note": "DOI matches Gama et al., ACM Computing Surveys 2014."
+ },
+ {
+  "ref_id": "A024",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/TKDE.2018.2876857",
+  "note": "DOI matches Lu et al., TKDE (online 2018, print 2019)."
+ },
+ {
+  "ref_id": "A109",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.neurips.cc/paper_files/paper/2020/file/c4ede56bbd98819ae6112b20ac6bf145-Paper.pdf",
+  "note": "Geiping et al., NeurIPS 2020."
+ },
+ {
+  "ref_id": "A086",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+  "note": "Pendlebury et al., USENIX Security 2019."
+ },
+ {
+  "ref_id": "A084",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/SP.2010.25",
+  "note": "DOI matches Sommer and Paxson, IEEE S&P 2010."
+ },
+ {
+  "ref_id": "A049",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3133956.3134012",
+  "note": "DOI matches Hitaj et al., CCS 2017."
+ },
+ {
+  "ref_id": "A039",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.18653/v1/D19-1221",
+  "note": "DOI matches Wallace et al., EMNLP-IJCNLP 2019."
+ },
+ {
+  "ref_id": "A063",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://proceedings.neurips.cc/paper/7181-attention-is-all",
+  "note": "Matches NeurIPS 2017 paper."
+ },
+ {
+  "ref_id": "A026",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+  "note": "Matches USENIX Security 2019 paper."
+ },
+ {
+  "ref_id": "A155",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.18653/v1/D18-1316",
+  "note": "DOI resolves to this EMNLP 2018 paper."
+ },
+ {
+  "ref_id": "A070",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://salford-repository.worktribe.com/output/1563753/phishing-email-detection-using-natural-language-processing-techniques-a-literature-survey",
+  "note": "Procedia CS 189 (2021), same authors; DOI omitted."
+ },
+ {
+  "ref_id": "A091",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1109/MilCIS.2015.7348942",
+  "note": "DOI resolves to this MilCIS 2015 paper."
+ },
+ {
+  "ref_id": "A073",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1016/j.dss.2011.03.002",
+  "note": "DOI resolves to this DSS 2011 paper."
+ },
+ {
+  "ref_id": "A009",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1016/j.eswa.2018.09.029",
+  "note": "DOI resolves to this ESWA 2019 paper."
+ },
+ {
+  "ref_id": "A012",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1016/j.cose.2013.12.003",
+  "note": "DOI resolves to this Computers & Security 2014 paper."
+ },
+ {
+  "ref_id": "A152",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1609/aaai.v34i05.6311",
+  "note": "DOI resolves to this AAAI 2020 paper."
+ },
+ {
+  "ref_id": "A032",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1609/aaai.v34i05.6311",
+  "note": "DOI resolves to this AAAI 2020 paper."
+ },
+ {
+  "ref_id": "A182",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://avesis.gazi.edu.tr/yayin/03be7f9a-6625-4f6b-b772-973b57d6284d/turkish-adaptation-of-digital-literacy-scale-and-investigating-pre-service-science-teachers-digital-literacy",
+  "note": "Paper exists in Journal of Education and Future 2017 with these authors."
+ },
+ {
+  "ref_id": "A096",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.18653/v1/P19-1103",
+  "note": "DOI resolves to this ACL 2019 paper."
+ },
+ {
+  "ref_id": "A145",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/jordaney",
+  "note": "Matches USENIX Security 2017 paper."
+ },
+ {
+  "ref_id": "A168",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://mlanthology.org/iclr/2018/mcmahan2018iclr-learning",
+  "note": "Matches ICLR 2018 paper."
+ },
+ {
+  "ref_id": "A125",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1145/1299015.1299021",
+  "note": "DOI resolves to this eCrime 2007 paper."
+ },
+ {
+  "ref_id": "A000",
+  "label": "exists_with_errors",
+  "wrong_fields": [
+   "doi"
+  ],
+  "evidence_url": "https://doi.org/10.1145/1242572.1242660",
+  "note": "Paper exists but given DOI resolves to 'Predicting clicks' (Richardson et al.); correct DOI is 10.1145/1242572.1242660."
+ },
+ {
+  "ref_id": "A107",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1145/3133956.3133982",
+  "note": "DOI resolves to this CCS 2017 paper."
+ },
+ {
+  "ref_id": "A102",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://proceedings.mlr.press/v54/mcmahan17a.html",
+  "note": "Matches AISTATS 2017 (PMLR 54) paper."
+ },
+ {
+  "ref_id": "A167",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://doi.org/10.1145/3133956.3133982",
+  "note": "DOI resolves to this CCS 2017 paper."
+ },
+ {
+  "ref_id": "A043",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.nips.cc/paper_files/paper/2019/file/60a6c4002cc7b29142def8871531281a-Paper.pdf",
+  "note": "Matches NeurIPS 2019 paper."
+ },
+ {
+  "ref_id": "A023",
+  "label": "exists_with_errors",
+  "wrong_fields": [
+   "title"
+  ],
+  "evidence_url": "https://doi.org/10.1109/MCI.2015.2471196",
+  "note": "DOI resolves to Ditzler et al. 2015 but actual title is 'Learning in Nonstationary Environments: A Survey' (prefix 'Adaptive strategies for' added)."
+ },
+ {
+  "ref_id": "A087",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity21/presentation/yang",
+  "note": "Matches USENIX Security 2021 paper."
+ },
+ {
+  "ref_id": "A007",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://proceedings.neurips.cc/paper/7181-attention-is-all",
+  "note": "Matches NeurIPS 2017 paper."
+ },
+ {
+  "ref_id": "A018",
+  "label": "exists_with_errors",
+  "wrong_fields": [
+   "doi",
+   "venue"
+  ],
+  "evidence_url": "https://research.utwente.nl/en/publications/on-the-anatomy-of-social-engineering-attacks-a-literature-based-d/",
+  "note": "Paper is in J. Investigative Psychology and Offender Profiling 15(1) 2018, DOI 10.1002/jip.1482; given CHB DOI resolves to an unrelated autism-robot paper."
+ },
+ {
+  "ref_id": "A025",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity17/technical-sessions/presentation/jordaney",
+  "note": "USENIX Security 2017 page matches title and authors."
+ },
+ {
+  "ref_id": "A162",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html",
+  "note": "NeurIPS 2019 proceedings page matches."
+ },
+ {
+  "ref_id": "A147",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity21/presentation/yang-limin",
+  "note": "USENIX Security 2021 page matches."
+ },
+ {
+  "ref_id": "A074",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/1753326.1753383",
+  "note": "DOI resolves to Sheng et al., CHI 2010."
+ },
+ {
+  "ref_id": "A027",
+  "label": "exists_with_errors",
+  "wrong_fields": [
+   "doi"
+  ],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3474369.3486864",
+  "note": "Paper exists (AISec'21, DOI 10.1145/3474369.3486864); given DOI 10.1145/3474369.3486872 resolves to FedV by Xu et al."
+ },
+ {
+  "ref_id": "A083",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/TKDE.2018.2876857",
+  "note": "DOI resolves to Lu et al.; online 2018, print 2019."
+ },
+ {
+  "ref_id": "A177",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1080/00330124.2023.2190373",
+  "note": "DOI resolves to Day 2023 Professional Geographer."
+ },
+ {
+  "ref_id": "A016",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/1124772.1124861",
+  "note": "DOI resolves to Dhamija et al., CHI 2006."
+ },
+ {
+  "ref_id": "A122",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.nips.cc/paper/2017/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html",
+  "note": "NeurIPS 2017 proceedings page matches."
+ },
+ {
+  "ref_id": "A044",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.nips.cc/paper/2020/hash/c4ede56bbd98819ae6112b20ac6bf145-Abstract.html",
+  "note": "NeurIPS 2020 proceedings page matches."
+ },
+ {
+  "ref_id": "A139",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3025453.3025831",
+  "note": "DOI resolves to Oliveira et al., CHI 2017."
+ },
+ {
+  "ref_id": "A010",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1002/asi.20779",
+  "note": "DOI resolves to Workman JASIST; online Dec 2007, print 2008."
+ },
+ {
+  "ref_id": "A114",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1038/s41598-023-41032-5",
+  "note": "DOI resolves to Walters & Wilder 2023 Sci Rep."
+ },
+ {
+  "ref_id": "A150",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity22/presentation/arp",
+  "note": "USENIX Security 2022 page matches."
+ },
+ {
+  "ref_id": "A161",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3374217",
+  "note": "DOI resolves to Zhang et al. 2020 ACM TIST survey."
+ },
+ {
+  "ref_id": "A006",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.18653/v1/N19-1423",
+  "note": "DOI resolves to BERT, NAACL 2019."
+ },
+ {
+  "ref_id": "A020",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1109/STAST.2014.12",
+  "note": "Found in Crossref as STAST 2014 paper by Uebelacker & Quiel (DOI omitted)."
+ },
+ {
+  "ref_id": "A166",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3133956.3134012",
+  "note": "DOI resolves to Hitaj et al., CCS 2017."
+ },
+ {
+  "ref_id": "A029",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity22/presentation/arp",
+  "note": "USENIX Security 2022 page matches."
+ },
+ {
+  "ref_id": "A142",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://ieeexplore.ieee.org/document/5504793/",
+  "note": "DOI resolves to Sommer & Paxson, IEEE S&P 2010."
+ },
+ {
+  "ref_id": "A103",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://papers.nips.cc/paper/2019/hash/60a6c4002cc7b29142def8871531281a-Abstract.html",
+  "note": "NeurIPS 2019 proceedings page matches."
+ },
+ {
+  "ref_id": "A146",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://www.usenix.org/conference/usenixsecurity19/presentation/pendlebury",
+  "note": "USENIX Security 2019 page matches."
+ },
+ {
+  "ref_id": "A172",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1038/s41598-023-41032-5",
+  "note": "DOI resolves to Walters & Wilder 2023 Sci Rep."
+ },
+ {
+  "ref_id": "A040",
+  "label": "correct",
+  "wrong_fields": [],
+  "evidence_url": "https://api.crossref.org/works/10.1145/3374217",
+  "note": "DOI resolves to Zhang et al. 2020 ACM TIST survey."
+ }
+]

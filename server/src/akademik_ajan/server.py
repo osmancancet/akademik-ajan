@@ -7,7 +7,7 @@ from typing import Any
 import anyio
 from mcp.server.mcpserver import MCPServer
 
-from . import __version__, bibtex, verify
+from . import __version__, bibtex, literature, verify
 
 mcp = MCPServer(
     name="akademik-ajan",
@@ -64,6 +64,33 @@ async def search_works(
         lambda: verify.search_works(title, authors, year, rows=rows)
     )
     return [r.to_dict() for r in records]
+
+
+@mcp.tool()
+async def search_literature(
+    query: str,
+    from_year: int | None = None,
+    to_year: int | None = None,
+    per_source: int = 10,
+    sources: list[str] | None = None,
+) -> dict[str, Any]:
+    """Search Crossref, TR Dizin and OpenAlex for works on a topic.
+
+    Returns merged, de-duplicated works (title, authors, year, venue, DOI, abstract
+    when available, citation count, and which sources found each one). Use Turkish
+    keywords to reach Turkish-language literature in TR Dizin.
+    """
+    chosen = tuple(s for s in (sources or literature.SOURCES) if s in literature.SOURCES)
+    return await anyio.to_thread.run_sync(
+        lambda: literature.search_literature(query, from_year, to_year, per_source,
+                                             chosen or literature.SOURCES)
+    )
+
+
+@mcp.tool()
+async def export_bibtex(dois: list[str]) -> dict[str, Any]:
+    """Generate BibTeX entries for DOIs from the registry records (never from memory)."""
+    return await anyio.to_thread.run_sync(lambda: literature.export_bibtex(dois))
 
 
 def main() -> None:

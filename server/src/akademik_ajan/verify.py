@@ -46,6 +46,17 @@ class Record:
     abstract: str | None = None
     alt_titles: list[str] = field(default_factory=list)  # e.g. the English title of a Turkish paper
     url: str | None = None
+    # Bibliographic detail used for BibTeX export and ranking; not used in verification.
+    author_names: list[str] = field(default_factory=list)  # "Family, Given", in order
+    volume: str | None = None
+    issue: str | None = None
+    pages: str | None = None
+    publisher: str | None = None
+    kind: str | None = None  # "article", "inproceedings", "book", "chapter", "thesis", "other"
+    cited_by: int | None = None
+    # Every publication year the source reports (online-first, print, issued). A citation
+    # may legitimately use any of them; papers can appear online years before the issue.
+    years: list[int] = field(default_factory=list)
 
     def titles(self) -> list[str]:
         return [t for t in [self.title, *self.alt_titles] if t]
@@ -130,12 +141,54 @@ def author_matches(claimed: str, record_author: str) -> bool:
 # --------------------------------------------------------------------------- #
 
 
+_CROSSREF_DATES = ("issued", "published-print", "published-online", "published", "created")
+
+
 def _crossref_year(msg: dict[str, Any]) -> int | None:
-    for key in ("issued", "published-print", "published-online", "published", "created"):
+    years = _crossref_years(msg)
+    return years[0] if years else None
+
+
+def _crossref_years(msg: dict[str, Any]) -> list[int]:
+    """Distinct years from Crossref's date fields, most authoritative first ("created" only as fallback)."""
+    found: list[int] = []
+    for key in _CROSSREF_DATES:
+        if key == "created" and found:
+            break
         parts = (msg.get(key) or {}).get("date-parts") or []
         if parts and parts[0] and parts[0][0]:
-            return int(parts[0][0])
-    return None
+            year = int(parts[0][0])
+            if year not in found:
+                found.append(year)
+    return found
+
+
+_KINDS = {
+    # Crossref types
+    "journal-article": "article", "proceedings-article": "inproceedings", "book": "book",
+    "monograph": "book", "edited-book": "book", "book-chapter": "chapter", "dissertation": "thesis",
+    "posted-content": "other",
+    # OpenAlex types
+    "article": "article", "book-chapter": "chapter",
+    # TR Dizin docType values
+    "PAPER": "article", "ARTICLE": "article", "PROCEEDING": "inproceedings", "BOOK": "book",
+    "THESIS": "thesis", "PROJECT": "other",
+}
+
+
+def _split_name(full: str) -> str:
+    """'Given Middle Family' -> 'Family, Given Middle' (keeps an existing comma form)."""
+    full = re.sub(r"\s+", " ", (full or "").strip())
+    if not full or "," in full:
+        return full
+    parts = full.split(" ")
+    return parts[0] if len(parts) == 1 else f"{parts[-1]}, {' '.join(parts[:-1])}"
+
+
+def _crossref_author(a: dict[str, Any]) -> str:
+    if a.get("family"):
+        return f"{a['family']}, {a['given']}" if a.get("given") else a["family"]
+    return a.get("name") or ""
 
 
 def parse_crossref(msg: dict[str, Any]) -> Record:
@@ -145,16 +198,25 @@ def parse_crossref(msg: dict[str, Any]) -> Record:
     if abstract:
         abstract = re.sub(r"\s+", " ", _TAG_RE.sub(" ", abstract)).strip()
     doi = normalize_doi(msg.get("DOI"))
+    authors = msg.get("author") or []
     return Record(
         source="crossref",
         doi=doi,
         title=titles[0] or "",
         alt_titles=[t for t in (msg.get("original-title") or []) + (msg.get("subtitle") or []) if t],
-        authors=[a.get("family") or a.get("name") or "" for a in msg.get("author") or []],
+        authors=[a.get("family") or a.get("name") or "" for a in authors],
         year=_crossref_year(msg),
         venue=venues[0],
         abstract=abstract or None,
         url=f"https://doi.org/{doi}" if doi else None,
+        author_names=[_crossref_author(a) for a in authors],
+        volume=msg.get("volume"),
+        issue=msg.get("issue"),
+        pages=(msg.get("page") or "").replace("-", "--") or None,
+        publisher=msg.get("publisher"),
+        kind=_KINDS.get(msg.get("type") or "", "other"),
+        cited_by=msg.get("is-referenced-by-count"),
+        years=_crossref_years(msg),
     )
 
 
@@ -167,18 +229,24 @@ def _openalex_abstract(index: dict[str, list[int]] | None) -> str | None:
 
 def parse_openalex(work: dict[str, Any]) -> Record:
     source = ((work.get("primary_location") or {}).get("source") or {})
+    names = [(a.get("author") or {}).get("display_name") or "" for a in work.get("authorships") or []]
+    biblio = work.get("biblio") or {}
+    first, last = biblio.get("first_page"), biblio.get("last_page")
     return Record(
         source="openalex",
         doi=normalize_doi(work.get("doi")),
         title=work.get("display_name") or work.get("title") or "",
-        authors=[
-            family_name((a.get("author") or {}).get("display_name") or "")
-            for a in work.get("authorships") or []
-        ],
+        authors=[family_name(n) for n in names],
         year=work.get("publication_year"),
         venue=source.get("display_name"),
         abstract=_openalex_abstract(work.get("abstract_inverted_index")),
         url=work.get("id"),
+        author_names=[_split_name(n) for n in names],
+        volume=biblio.get("volume"),
+        issue=biblio.get("issue"),
+        pages=f"{first}--{last}" if first and last and first != last else first,
+        kind=_KINDS.get(work.get("type") or "", "other"),
+        cited_by=work.get("cited_by_count"),
     )
 
 
@@ -190,17 +258,27 @@ def parse_trdizin(src: dict[str, Any]) -> Record:
     abstract = next((v.get("abstract") for v in versions if v.get("abstract")), None)
     authors = sorted(src.get("authors") or [], key=lambda a: a.get("order") or 0)
     journal = src.get("journal") if isinstance(src.get("journal"), dict) else {}
+    issue = src.get("issue") if isinstance(src.get("issue"), dict) else {}
     year = src.get("publicationYear")
+    names = [a.get("inPublicationName") or a.get("name") or "" for a in authors]
+    start, end = str(src.get("startPage") or ""), str(src.get("endPage") or "")
+    pages = f"{start}--{end}" if start not in ("", "0") and end and end != start else (end or None)
     return Record(
         source="trdizin",
         doi=normalize_doi(src.get("doi")),
         title=titles[0] if titles else "",
         alt_titles=titles[1:],
-        authors=[family_name(a.get("inPublicationName") or a.get("name") or "") for a in authors],
+        authors=[family_name(n) for n in names],
         year=int(year) if year else None,
         venue=journal.get("name"),
         abstract=abstract,
         url=TRDIZIN_PAGE.format(id=src["id"]) if src.get("id") else None,
+        author_names=[_split_name(n) for n in names],
+        volume=issue.get("volume") or None,
+        issue=issue.get("number") or None,
+        pages=pages if pages != "0" else None,
+        kind=_KINDS.get(src.get("docType") or "", "other"),
+        cited_by=src.get("orderCitationCount"),
     )
 
 
@@ -381,14 +459,15 @@ def _compare(
             add("first_author", "fail", f"{authors[0]!r} not among {found[:6]}")
 
     if year:
-        if record.year is None:
+        known = record.years or ([record.year] if record.year else [])
+        if not known:
             add("year", "warn", "record has no year")
-        elif record.year == year:
+        elif year in known:
             add("year", "ok", str(year))
-        elif abs(record.year - year) == 1:
-            add("year", "warn", f"record says {record.year} (online-first vs print?)")
+        elif min(abs(y - year) for y in known) == 1:
+            add("year", "warn", f"record says {'/'.join(map(str, known))} (online-first vs print?)")
         else:
-            add("year", "fail", f"record says {record.year}")
+            add("year", "fail", f"record says {'/'.join(map(str, known))}")
 
     return checks, worst
 

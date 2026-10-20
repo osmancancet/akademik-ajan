@@ -1,0 +1,984 @@
+[
+{
+"ref_id": "A013",
+"title": "Suspicion, cognition, and automaticity model of phishing susceptibility",
+"authors": [
+"Vishwanath, Arun",
+"Harrison, Brynne",
+"Ng, Yee Jiun"
+],
+"year": 2018,
+"venue": "Communication Research",
+"doi": "10.1177/0093650215627483"
+},
+{
+"ref_id": "A031",
+"title": "HotFlip: White-Box Adversarial Examples for Text Classification",
+"authors": [
+"Ebrahimi, Javid",
+"Rao, Anyi",
+"Lowd, Daniel",
+"Dou, Dejing"
+],
+"year": 2018,
+"venue": "Proceedings of the 56th Annual Meeting of the Association for Computational Linguistics (ACL), Volume 2: Short Papers",
+"doi": "10.18653/v1/P18-2006"
+},
+{
+"ref_id": "A085",
+"title": "Dos and Don'ts of Machine Learning in Computer Security",
+"authors": [
+"Arp, Daniel",
+"Quiring, Erwin",
+"Pendlebury, Feargus",
+"Warnecke, Alexander",
+"Pierazzi, Fabio",
+"Wressnegger, Christian",
+"Cavallaro, Lorenzo",
+"Rieck, Konrad"
+],
+"year": 2022,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A092",
+"title": "Explaining and Harnessing Adversarial Examples",
+"authors": [
+"Goodfellow, Ian J.",
+"Shlens, Jonathon",
+"Szegedy, Christian"
+],
+"year": 2015,
+"venue": "International Conference on Learning Representations (ICLR)",
+"doi": null
+},
+{
+"ref_id": "A132",
+"title": "Wisecrackers: A theory-grounded investigation of phishing and pretext social engineering threats to information security",
+"authors": [
+"Workman, Michael"
+],
+"year": 2008,
+"venue": "Journal of the American Society for Information Science and Technology",
+"doi": "10.1002/asi.20779"
+},
+{
+"ref_id": "A072",
+"title": "Wisecrackers: A theory-grounded investigation of phishing and pretext social engineering threats to information security",
+"authors": [
+"Workman, Michael"
+],
+"year": 2008,
+"venue": "Journal of the American Society for Information Science and Technology",
+"doi": "10.1002/asi.20779"
+},
+{
+"ref_id": "A065",
+"title": "DistilBERT, a distilled version of BERT: smaller, faster, cheaper and lighter",
+"authors": [
+"Sanh, Victor",
+"Debut, Lysandre",
+"Chaumond, Julien",
+"Wolf, Thomas"
+],
+"year": 2019,
+"venue": "5th Workshop on Energy Efficient Machine Learning and Cognitive Computing (NeurIPS 2019)",
+"doi": null
+},
+{
+"ref_id": "A021",
+"title": "Outside the closed world: On using machine learning for network intrusion detection",
+"authors": [
+"Sommer, Robin",
+"Paxson, Vern"
+],
+"year": 2010,
+"venue": "2010 IEEE Symposium on Security and Privacy (IEEE S&P)",
+"doi": "10.1109/SP.2010.25"
+},
+{
+"ref_id": "A134",
+"title": "Who falls for phish? A demographic analysis of phishing susceptibility and effectiveness of interventions",
+"authors": [
+"Sheng, Steve",
+"Holbrook, Mandy",
+"Kumaraguru, Ponnurangam",
+"Cranor, Lorrie Faith",
+"Downs, Julie"
+],
+"year": 2010,
+"venue": "Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)",
+"doi": "10.1145/1753326.1753383"
+},
+{
+"ref_id": "A111",
+"title": "Advances and Open Problems in Federated Learning",
+"authors": [
+"Kairouz, Peter",
+"McMahan, H. Brendan",
+"Avent, Brendan",
+"Bellet, Aurélien",
+"Bennis, Mehdi",
+"Bhagoji, Arjun Nitin",
+"Bonawitz, Kallista",
+"Charles, Zachary",
+"Cormode, Graham",
+"Cummings, Rachel"
+],
+"year": 2021,
+"venue": "Foundations and Trends in Machine Learning",
+"doi": "10.1561/2200000083"
+},
+{
+"ref_id": "A052",
+"title": "Artificial hallucinations in ChatGPT: Implications in scientific writing",
+"authors": [
+"Alkaissi, Hussam",
+"McFarlane, Samy I."
+],
+"year": 2023,
+"venue": "Cureus",
+"doi": "10.7759/cureus.35179"
+},
+{
+"ref_id": "A110",
+"title": "Deep Models Under the GAN: Information Leakage from Collaborative Deep Learning",
+"authors": [
+"Hitaj, Briland",
+"Ateniese, Giuseppe",
+"Perez-Cruz, Fernando"
+],
+"year": 2017,
+"venue": "ACM SIGSAC Conference on Computer and Communications Security (CCS)",
+"doi": "10.1145/3133956.3134012"
+},
+{
+"ref_id": "A003",
+"title": "A comprehensive survey of AI-enabled phishing attacks detection techniques",
+"authors": [
+"Basit, Abdul",
+"Zafar, Maham",
+"Liu, Xuan",
+"Javed, Abdul Rehman",
+"Jalil, Zunera",
+"Kifayat, Kashif"
+],
+"year": 2021,
+"venue": "Telecommunication Systems",
+"doi": "10.1007/s11235-020-00733-2"
+},
+{
+"ref_id": "A048",
+"title": "A Hybrid Approach to Privacy-Preserving Federated Learning",
+"authors": [
+"Truex, Stacey",
+"Baracaldo, Nathalie",
+"Anwar, Ali",
+"Steinke, Thomas",
+"Ludwig, Heiko",
+"Zhang, Rui",
+"Zhou, Yi"
+],
+"year": 2019,
+"venue": "Proceedings of the 12th ACM Workshop on Artificial Intelligence and Security (AISec 2019)",
+"doi": "10.1145/3338501.3357370"
+},
+{
+"ref_id": "A144",
+"title": "Learning under Concept Drift: A Review",
+"authors": [
+"Lu, Jie",
+"Liu, Anjin",
+"Dong, Fan",
+"Gu, Feng",
+"Gama, João",
+"Zhang, Guangquan"
+],
+"year": 2019,
+"venue": "IEEE Transactions on Knowledge and Data Engineering",
+"doi": "10.1109/TKDE.2018.2876857"
+},
+{
+"ref_id": "A064",
+"title": "Language Models are Few-Shot Learners",
+"authors": [
+"Brown, Tom B.",
+"Mann, Benjamin",
+"Ryder, Nick",
+"Subbiah, Melanie",
+"Kaplan, Jared"
+],
+"year": 2020,
+"venue": "Advances in Neural Information Processing Systems 33 (NeurIPS 2020)",
+"doi": null
+},
+{
+"ref_id": "A163",
+"title": "Inverting Gradients - How Easy Is It to Break Privacy in Federated Learning?",
+"authors": [
+"Geiping, Jonas",
+"Bauermeister, Hartmut",
+"Dröge, Hannah",
+"Moeller, Michael"
+],
+"year": 2020,
+"venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+"doi": null
+},
+{
+"ref_id": "A022",
+"title": "A survey on concept drift adaptation",
+"authors": [
+"Gama, João",
+"Žliobaitė, Indrė",
+"Bifet, Albert",
+"Pechenizkiy, Mykola",
+"Bouchachia, Abdelhamid"
+],
+"year": 2014,
+"venue": "ACM Computing Surveys",
+"doi": "10.1145/2523813"
+},
+{
+"ref_id": "A024",
+"title": "Learning under concept drift: A review",
+"authors": [
+"Lu, Jie",
+"Liu, Anjin",
+"Dong, Fan",
+"Gu, Feng",
+"Gama, João",
+"Zhang, Guangquan"
+],
+"year": 2019,
+"venue": "IEEE Transactions on Knowledge and Data Engineering",
+"doi": "10.1109/TKDE.2018.2876857"
+},
+{
+"ref_id": "A109",
+"title": "Inverting Gradients - How easy is it to break privacy in federated learning?",
+"authors": [
+"Geiping, Jonas",
+"Bauermeister, Hartmut",
+"Dröge, Hannah",
+"Moeller, Michael"
+],
+"year": 2020,
+"venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+"doi": null
+},
+{
+"ref_id": "A086",
+"title": "TESSERACT: Eliminating Experimental Bias in Malware Classification across Space and Time",
+"authors": [
+"Pendlebury, Feargus",
+"Pierazzi, Fabio",
+"Jordaney, Roberto",
+"Kinder, Johannes",
+"Cavallaro, Lorenzo"
+],
+"year": 2019,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A084",
+"title": "Outside the Closed World: On Using Machine Learning for Network Intrusion Detection",
+"authors": [
+"Sommer, Robin",
+"Paxson, Vern"
+],
+"year": 2010,
+"venue": "IEEE Symposium on Security and Privacy",
+"doi": "10.1109/SP.2010.25"
+},
+{
+"ref_id": "A049",
+"title": "Deep Models Under the GAN: Information Leakage from Collaborative Deep Learning",
+"authors": [
+"Hitaj, Briland",
+"Ateniese, Giuseppe",
+"Perez-Cruz, Fernando"
+],
+"year": 2017,
+"venue": "Proceedings of the 2017 ACM SIGSAC Conference on Computer and Communications Security (CCS)",
+"doi": "10.1145/3133956.3134012"
+},
+{
+"ref_id": "A039",
+"title": "Universal Adversarial Triggers for Attacking and Analyzing NLP",
+"authors": [
+"Wallace, Eric",
+"Feng, Shi",
+"Kandpal, Nikhil",
+"Gardner, Matt",
+"Singh, Sameer"
+],
+"year": 2019,
+"venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing (EMNLP-IJCNLP)",
+"doi": "10.18653/v1/D19-1221"
+},
+{
+"ref_id": "A063",
+"title": "Attention Is All You Need",
+"authors": [
+"Vaswani, Ashish",
+"Shazeer, Noam",
+"Parmar, Niki",
+"Uszkoreit, Jakob",
+"Jones, Llion",
+"Gomez, Aidan N.",
+"Kaiser, Lukasz",
+"Polosukhin, Illia"
+],
+"year": 2017,
+"venue": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
+"doi": null
+},
+{
+"ref_id": "A026",
+"title": "TESSERACT: Eliminating experimental bias in malware classification across space and time",
+"authors": [
+"Pendlebury, Feargus",
+"Pierazzi, Fabio",
+"Jordaney, Roberto",
+"Kinder, Johannes",
+"Cavallaro, Lorenzo"
+],
+"year": 2019,
+"venue": "28th USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A155",
+"title": "Generating Natural Language Adversarial Examples",
+"authors": [
+"Alzantot, Moustafa",
+"Sharma, Yash",
+"Elgohary, Ahmed",
+"Ho, Bo-Jhang",
+"Srivastava, Mani",
+"Chang, Kai-Wei"
+],
+"year": 2018,
+"venue": "Proceedings of the 2018 Conference on Empirical Methods in Natural Language Processing (EMNLP)",
+"doi": "10.18653/v1/D18-1316"
+},
+{
+"ref_id": "A070",
+"title": "Phishing Email Detection Using Natural Language Processing Techniques: A Literature Survey",
+"authors": [
+"Salloum, Said",
+"Gaber, Tarek",
+"Vadera, Sunil",
+"Shaalan, Khaled"
+],
+"year": 2021,
+"venue": "Procedia Computer Science",
+"doi": null
+},
+{
+"ref_id": "A091",
+"title": "UNSW-NB15: a comprehensive data set for network intrusion detection systems (UNSW-NB15 network data set)",
+"authors": [
+"Moustafa, Nour",
+"Slay, Jill"
+],
+"year": 2015,
+"venue": "Military Communications and Information Systems Conference (MilCIS)",
+"doi": "10.1109/MilCIS.2015.7348942"
+},
+{
+"ref_id": "A073",
+"title": "Why do people get phished? Testing individual differences in phishing vulnerability within an integrated, information processing model",
+"authors": [
+"Vishwanath, Arun",
+"Herath, Tejaswini",
+"Chen, Rui",
+"Wang, Jingguo",
+"Rao, H. Raghav"
+],
+"year": 2011,
+"venue": "Decision Support Systems",
+"doi": "10.1016/j.dss.2011.03.002"
+},
+{
+"ref_id": "A009",
+"title": "Machine learning based phishing detection from URLs",
+"authors": [
+"Sahingoz, Ozgur Koray",
+"Buber, Ebru",
+"Demir, Onder",
+"Diri, Banu"
+],
+"year": 2019,
+"venue": "Expert Systems with Applications",
+"doi": "10.1016/j.eswa.2018.09.029"
+},
+{
+"ref_id": "A012",
+"title": "Determining employee awareness using the Human Aspects of Information Security Questionnaire (HAIS-Q)",
+"authors": [
+"Parsons, Kathryn",
+"McCormac, Alice",
+"Butavicius, Marcus",
+"Pattinson, Malcolm",
+"Jerram, Cate"
+],
+"year": 2014,
+"venue": "Computers & Security",
+"doi": "10.1016/j.cose.2013.12.003"
+},
+{
+"ref_id": "A152",
+"title": "Is BERT Really Robust? A Strong Baseline for Natural Language Attack on Text Classification and Entailment",
+"authors": [
+"Jin, Di",
+"Jin, Zhijing",
+"Zhou, Joey Tianyi",
+"Szolovits, Peter"
+],
+"year": 2020,
+"venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+"doi": "10.1609/aaai.v34i05.6311"
+},
+{
+"ref_id": "A032",
+"title": "Is BERT Really Robust? A Strong Baseline for Natural Language Attack on Text Classification and Entailment",
+"authors": [
+"Jin, Di",
+"Jin, Zhijing",
+"Zhou, Joey Tianyi",
+"Szolovits, Peter"
+],
+"year": 2020,
+"venue": "Proceedings of the AAAI Conference on Artificial Intelligence, 34(05)",
+"doi": "10.1609/aaai.v34i05.6311"
+},
+{
+"ref_id": "A182",
+"title": "Turkish adaptation of digital literacy scale and investigating pre-service science teachers' digital literacy",
+"authors": [
+"Üstündağ, Mutlu Tahsin",
+"Güneş, Erhan",
+"Bahçivan, Eralp"
+],
+"year": 2017,
+"venue": "Journal of Education and Future",
+"doi": null
+},
+{
+"ref_id": "A096",
+"title": "Generating Natural Language Adversarial Examples through Probability Weighted Word Saliency",
+"authors": [
+"Ren, Shuhuai",
+"Deng, Yihe",
+"He, Kun",
+"Che, Wanxiang"
+],
+"year": 2019,
+"venue": "Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics (ACL)",
+"doi": "10.18653/v1/P19-1103"
+},
+{
+"ref_id": "A145",
+"title": "Transcend: Detecting Concept Drift in Malware Classification Models",
+"authors": [
+"Jordaney, Roberto",
+"Sharad, Kumar",
+"Dash, Santanu K.",
+"Wang, Zhi",
+"Papini, Davide",
+"Nouretdinov, Ilia",
+"Cavallaro, Lorenzo"
+],
+"year": 2017,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A168",
+"title": "Learning Differentially Private Recurrent Language Models",
+"authors": [
+"McMahan, H. Brendan",
+"Ramage, Daniel",
+"Talwar, Kunal",
+"Zhang, Li"
+],
+"year": 2018,
+"venue": "International Conference on Learning Representations (ICLR)",
+"doi": null
+},
+{
+"ref_id": "A125",
+"title": "A Comparison of Machine Learning Techniques for Phishing Detection",
+"authors": [
+"Abu-Nimeh, Saeed",
+"Nappa, Dario",
+"Wang, Xinlei",
+"Nair, Suku"
+],
+"year": 2007,
+"venue": "Proceedings of the Anti-Phishing Working Group's 2nd Annual eCrime Researchers Summit",
+"doi": "10.1145/1299015.1299021"
+},
+{
+"ref_id": "A000",
+"title": "Learning to detect phishing emails",
+"authors": [
+"Fette, Ian",
+"Sadeh, Norman",
+"Tomasic, Anthony"
+],
+"year": 2007,
+"venue": "Proceedings of the 16th International Conference on World Wide Web (WWW '07)",
+"doi": "10.1145/1242572.1242643"
+},
+{
+"ref_id": "A107",
+"title": "Practical Secure Aggregation for Privacy-Preserving Machine Learning",
+"authors": [
+"Bonawitz, Keith",
+"Ivanov, Vladimir",
+"Kreuter, Ben",
+"Marcedone, Antonio",
+"McMahan, H. Brendan",
+"Patel, Sarvar",
+"Ramage, Daniel",
+"Segal, Aaron",
+"Seth, Karn"
+],
+"year": 2017,
+"venue": "ACM SIGSAC Conference on Computer and Communications Security (CCS)",
+"doi": "10.1145/3133956.3133982"
+},
+{
+"ref_id": "A102",
+"title": "Communication-Efficient Learning of Deep Networks from Decentralized Data",
+"authors": [
+"McMahan, H. Brendan",
+"Moore, Eider",
+"Ramage, Daniel",
+"Hampson, Seth",
+"Agüera y Arcas, Blaise"
+],
+"year": 2017,
+"venue": "Proceedings of the 20th International Conference on Artificial Intelligence and Statistics (AISTATS)",
+"doi": null
+},
+{
+"ref_id": "A167",
+"title": "Practical Secure Aggregation for Privacy-Preserving Machine Learning",
+"authors": [
+"Bonawitz, Keith",
+"Ivanov, Vladimir",
+"Kreuter, Ben",
+"Marcedone, Antonio",
+"McMahan, H. Brendan",
+"Patel, Sarvar",
+"Ramage, Daniel",
+"Segal, Aaron",
+"Seth, Karn"
+],
+"year": 2017,
+"venue": "ACM SIGSAC Conference on Computer and Communications Security (CCS)",
+"doi": "10.1145/3133956.3133982"
+},
+{
+"ref_id": "A043",
+"title": "Deep Leakage from Gradients",
+"authors": [
+"Zhu, Ligeng",
+"Liu, Zhijian",
+"Han, Song"
+],
+"year": 2019,
+"venue": "Advances in Neural Information Processing Systems 32 (NeurIPS 2019)",
+"doi": null
+},
+{
+"ref_id": "A023",
+"title": "Adaptive strategies for learning in nonstationary environments: a survey",
+"authors": [
+"Ditzler, Gregory",
+"Roveri, Manuel",
+"Alippi, Cesare",
+"Polikar, Robi"
+],
+"year": 2015,
+"venue": "IEEE Computational Intelligence Magazine",
+"doi": "10.1109/MCI.2015.2471196"
+},
+{
+"ref_id": "A087",
+"title": "CADE: Detecting and Explaining Concept Drift Samples for Security Applications",
+"authors": [
+"Yang, Limin",
+"Guo, Wenbo",
+"Hao, Qingying",
+"Ciptadi, Arridhana",
+"Ahmadzadeh, Ali",
+"Xing, Xinyu",
+"Wang, Gang"
+],
+"year": 2021,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A007",
+"title": "Attention Is All You Need",
+"authors": [
+"Vaswani, Ashish",
+"Shazeer, Noam",
+"Parmar, Niki",
+"Uszkoreit, Jakob",
+"Jones, Llion",
+"Gomez, Aidan N.",
+"Kaiser, Łukasz",
+"Polosukhin, Illia"
+],
+"year": 2017,
+"venue": "Advances in Neural Information Processing Systems 30 (NeurIPS 2017)",
+"doi": null
+},
+{
+"ref_id": "A018",
+"title": "On the anatomy of social engineering attacks: A literature-based dissection of successful attacks",
+"authors": [
+"Bullée, Jan-Willem H.",
+"Montoya, Lynn",
+"Pieters, Wolter",
+"Junger, Marianne",
+"Hartel, Pieter"
+],
+"year": 2018,
+"venue": "Computers in Human Behavior",
+"doi": "10.1016/j.chb.2015.08.036"
+},
+{
+"ref_id": "A025",
+"title": "Transcend: Detecting concept drift in malware classification models",
+"authors": [
+"Jordaney, Roberto",
+"Sharad, Kumar",
+"Dash, Santanu K.",
+"Wang, Zhi",
+"Papini, Davide",
+"Nouretdinov, Ilia",
+"Cavallaro, Lorenzo"
+],
+"year": 2017,
+"venue": "26th USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A162",
+"title": "Deep Leakage from Gradients",
+"authors": [
+"Zhu, Ligeng",
+"Liu, Zhijian",
+"Han, Song"
+],
+"year": 2019,
+"venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+"doi": null
+},
+{
+"ref_id": "A147",
+"title": "CADE: Detecting and Explaining Concept Drift Samples for Security Applications",
+"authors": [
+"Yang, Limin",
+"Guo, Wenbo",
+"Hao, Qingying",
+"Ciptadi, Arridhana",
+"Ahmadzadeh, Ali",
+"Xing, Xinyu",
+"Wang, Gang"
+],
+"year": 2021,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A074",
+"title": "Who falls for phish? A demographic analysis of phishing susceptibility and effectiveness of interventions",
+"authors": [
+"Sheng, Steve",
+"Holbrook, Mandy",
+"Kumaraguru, Ponnurangam",
+"Cranor, Lorrie Faith",
+"Downs, Julie"
+],
+"year": 2010,
+"venue": "Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)",
+"doi": "10.1145/1753326.1753383"
+},
+{
+"ref_id": "A027",
+"title": "INSOMNIA: Towards concept-drift robustness in network intrusion detection",
+"authors": [
+"Andresini, Giuseppina",
+"Pendlebury, Feargus",
+"Pierazzi, Fabio",
+"Loglisci, Corrado",
+"Appice, Annalisa",
+"Cavallaro, Lorenzo"
+],
+"year": 2021,
+"venue": "14th ACM Workshop on Artificial Intelligence and Security (AISec '21)",
+"doi": "10.1145/3474369.3486872"
+},
+{
+"ref_id": "A083",
+"title": "Learning under concept drift: A review",
+"authors": [
+"Lu, Jie",
+"Liu, Anjin",
+"Dong, Fan",
+"Gu, Feng",
+"Gama, João",
+"Zhang, Guangquan"
+],
+"year": 2019,
+"venue": "IEEE Transactions on Knowledge and Data Engineering",
+"doi": "10.1109/TKDE.2018.2876857"
+},
+{
+"ref_id": "A177",
+"title": "A Preliminary Investigation of Fake Peer-Reviewed Citations and References Generated by ChatGPT",
+"authors": [
+"Day, Terence"
+],
+"year": 2023,
+"venue": "The Professional Geographer",
+"doi": "10.1080/00330124.2023.2190373"
+},
+{
+"ref_id": "A016",
+"title": "Why phishing works",
+"authors": [
+"Dhamija, Rachna",
+"Tygar, J. D.",
+"Hearst, Marti"
+],
+"year": 2006,
+"venue": "Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI 2006)",
+"doi": "10.1145/1124772.1124861"
+},
+{
+"ref_id": "A122",
+"title": "Attention Is All You Need",
+"authors": [
+"Vaswani, Ashish",
+"Shazeer, Noam",
+"Parmar, Niki",
+"Uszkoreit, Jakob",
+"Jones, Llion",
+"Gomez, Aidan N.",
+"Kaiser, Łukasz",
+"Polosukhin, Illia"
+],
+"year": 2017,
+"venue": "Advances in Neural Information Processing Systems (NeurIPS 2017)",
+"doi": null
+},
+{
+"ref_id": "A044",
+"title": "Inverting Gradients - How easy is it to break privacy in federated learning?",
+"authors": [
+"Geiping, Jonas",
+"Bauermeister, Hartmut",
+"Dröge, Hannah",
+"Moeller, Michael"
+],
+"year": 2020,
+"venue": "Advances in Neural Information Processing Systems 33 (NeurIPS 2020)",
+"doi": null
+},
+{
+"ref_id": "A139",
+"title": "Dissecting spear phishing emails for older vs young adults: On the interplay of weapons of influence and life domains in predicting susceptibility to phishing",
+"authors": [
+"Oliveira, Daniela",
+"Rocha, Harold",
+"Yang, Huizi",
+"Ellis, Donovan",
+"Dommaraju, Sandeep",
+"Muradoglu, Melis",
+"Weir, Devon",
+"Soliman, Adam",
+"Lin, Tian",
+"Ebner, Natalie"
+],
+"year": 2017,
+"venue": "Proceedings of the 2017 CHI Conference on Human Factors in Computing Systems",
+"doi": "10.1145/3025453.3025831"
+},
+{
+"ref_id": "A010",
+"title": "Wisecrackers: A theory-grounded investigation of phishing and pretext social engineering threats to information security",
+"authors": [
+"Workman, Michael"
+],
+"year": 2008,
+"venue": "Journal of the American Society for Information Science and Technology",
+"doi": "10.1002/asi.20779"
+},
+{
+"ref_id": "A114",
+"title": "Fabrication and errors in the bibliographic citations generated by ChatGPT",
+"authors": [
+"Walters, William H.",
+"Wilder, Esther Isabelle"
+],
+"year": 2023,
+"venue": "Scientific Reports",
+"doi": "10.1038/s41598-023-41032-5"
+},
+{
+"ref_id": "A150",
+"title": "Dos and Don'ts of Machine Learning in Computer Security",
+"authors": [
+"Arp, Daniel",
+"Quiring, Erwin",
+"Pendlebury, Feargus",
+"Warnecke, Alexander",
+"Pierazzi, Fabio",
+"Wressnegger, Christian",
+"Cavallaro, Lorenzo",
+"Rieck, Konrad"
+],
+"year": 2022,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A161",
+"title": "Adversarial Attacks on Deep-learning Models in Natural Language Processing: A Survey",
+"authors": [
+"Zhang, Wei Emma",
+"Sheng, Quan Z.",
+"Alhazmi, Ahoud",
+"Li, Chenliang"
+],
+"year": 2020,
+"venue": "ACM Transactions on Intelligent Systems and Technology",
+"doi": "10.1145/3374217"
+},
+{
+"ref_id": "A006",
+"title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+"authors": [
+"Devlin, Jacob",
+"Chang, Ming-Wei",
+"Lee, Kenton",
+"Toutanova, Kristina"
+],
+"year": 2019,
+"venue": "Proceedings of the 2019 Conference of the North American Chapter of the Association for Computational Linguistics (NAACL-HLT 2019)",
+"doi": "10.18653/v1/N19-1423"
+},
+{
+"ref_id": "A020",
+"title": "The social engineering personality framework",
+"authors": [
+"Uebelacker, Sebastian",
+"Quiel, Susanne"
+],
+"year": 2014,
+"venue": "Workshop on Socio-Technical Aspects in Security and Trust (STAST 2014)",
+"doi": null
+},
+{
+"ref_id": "A166",
+"title": "Deep Models Under the GAN: Information Leakage from Collaborative Deep Learning",
+"authors": [
+"Hitaj, Briland",
+"Ateniese, Giuseppe",
+"Perez-Cruz, Fernando"
+],
+"year": 2017,
+"venue": "ACM SIGSAC Conference on Computer and Communications Security (CCS)",
+"doi": "10.1145/3133956.3134012"
+},
+{
+"ref_id": "A029",
+"title": "Dos and don'ts of machine learning in computer security",
+"authors": [
+"Arp, Daniel",
+"Quiring, Erwin",
+"Pendlebury, Feargus",
+"Warnecke, Alexander",
+"Pierazzi, Fabio",
+"Wressnegger, Christian",
+"Cavallaro, Lorenzo",
+"Rieck, Konrad"
+],
+"year": 2022,
+"venue": "31st USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A142",
+"title": "Outside the Closed World: On Using Machine Learning for Network Intrusion Detection",
+"authors": [
+"Sommer, Robin",
+"Paxson, Vern"
+],
+"year": 2010,
+"venue": "IEEE Symposium on Security and Privacy",
+"doi": "10.1109/SP.2010.25"
+},
+{
+"ref_id": "A103",
+"title": "Deep Leakage from Gradients",
+"authors": [
+"Zhu, Ligeng",
+"Liu, Zhijian",
+"Han, Song"
+],
+"year": 2019,
+"venue": "Advances in Neural Information Processing Systems (NeurIPS)",
+"doi": null
+},
+{
+"ref_id": "A146",
+"title": "TESSERACT: Eliminating Experimental Bias in Malware Classification across Space and Time",
+"authors": [
+"Pendlebury, Feargus",
+"Pierazzi, Fabio",
+"Jordaney, Roberto",
+"Kinder, Johannes",
+"Cavallaro, Lorenzo"
+],
+"year": 2019,
+"venue": "USENIX Security Symposium",
+"doi": null
+},
+{
+"ref_id": "A172",
+"title": "Fabrication and errors in the bibliographic citations generated by ChatGPT",
+"authors": [
+"Walters, William H.",
+"Wilder, Esther Isabelle"
+],
+"year": 2023,
+"venue": "Scientific Reports",
+"doi": "10.1038/s41598-023-41032-5"
+},
+{
+"ref_id": "A040",
+"title": "Adversarial Attacks on Deep-learning Models in Natural Language Processing: A Survey",
+"authors": [
+"Zhang, Wei Emma",
+"Sheng, Quan Z.",
+"Alhazmi, Ahoud",
+"Li, Chenliang"
+],
+"year": 2020,
+"venue": "ACM Transactions on Intelligent Systems and Technology, 11(3)",
+"doi": "10.1145/3374217"
+}
+]

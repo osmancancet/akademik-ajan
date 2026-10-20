@@ -19,7 +19,7 @@ VASWANI = {
 TURKISH = {
     "DOI": "10.1234/tr.2023.001",
     "title": ["Sosyal Mühendislik Saldırılarında İnsan Faktörü"],
-    "author": [{"family": "Çetlenbik"}, {"family": "Yılmaz"}],
+    "author": [{"family": "Çalışkan"}, {"family": "Yılmaz"}],
     "issued": {"date-parts": [[2023]]},
     "container-title": ["Bilişim Dergisi"],
 }

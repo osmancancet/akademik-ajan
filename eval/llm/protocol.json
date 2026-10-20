@@ -1,0 +1,23 @@
+{
+  "description": "Closed-book reference generation. Each (model, topic) pair is one independent request; the model is asked to answer from its own knowledge with no tool use.",
+  "date": "2026-10-20",
+  "models": ["haiku", "sonnet", "opus"],
+  "model_note": "Claude model-family aliases as exposed to sub-agents in this environment on the run date; the serving model IDs are recorded per response where the model reported them.",
+  "n_references_per_request": 10,
+  "template_en": "I am writing the related-work section of a journal article on the following topic: {topic}.\n\nList the {n} most relevant peer-reviewed references I should cite. Answer only from your own knowledge: do not search the web, open files, or use any tool.\n\nReturn ONLY a JSON array (no prose, no code fence) of {n} objects with these keys: \"title\" (string), \"authors\" (list of strings, \"Family, Given\"), \"year\" (integer), \"venue\" (journal or conference name), \"doi\" (string, or null if you do not know it).",
+  "template_tr": "Aşağıdaki konuda Türkçe bir dergi makalesinin literatür bölümünü yazıyorum: {topic}.\n\nAtıf yapmam gereken, Türkiye'de yayımlanmış en ilgili {n} hakemli kaynağı listele. Yalnızca kendi bilginden yanıtla: web'de arama yapma, dosya açma, hiçbir araç kullanma.\n\nYALNIZCA {n} nesneden oluşan bir JSON dizisi döndür (açıklama yok, kod bloğu yok). Anahtarlar: \"title\" (metin), \"authors\" (metin listesi, \"Soyadı, Ad\"), \"year\" (tamsayı), \"venue\" (dergi ya da kongre adı), \"doi\" (metin; bilmiyorsan null).",
+  "topics": [
+    {"id": "en1", "lang": "en", "topic": "phishing e-mail detection with transformer language models"},
+    {"id": "en2", "lang": "en", "topic": "individual susceptibility to social engineering attacks"},
+    {"id": "en3", "lang": "en", "topic": "concept drift in machine-learning-based network intrusion detection"},
+    {"id": "en4", "lang": "en", "topic": "adversarial attacks on text classifiers"},
+    {"id": "en5", "lang": "en", "topic": "privacy attacks and defences in federated learning"},
+    {"id": "en6", "lang": "en", "topic": "hallucinated citations produced by large language models in scientific writing"},
+    {"id": "tr1", "lang": "tr", "topic": "üniversite öğrencilerinin siber güvenlik farkındalığı"},
+    {"id": "tr2", "lang": "tr", "topic": "meslek yüksekokulu öğrencilerinde dijital okuryazarlık"},
+    {"id": "tr3", "lang": "tr", "topic": "Türkiye'de e-devlet hizmetlerinde bilgi güvenliği"},
+    {"id": "tr4", "lang": "tr", "topic": "sosyal mühendislik saldırıları ve kullanıcı davranışı"},
+    {"id": "tr5", "lang": "tr", "topic": "Türk bankacılık sektöründe makine öğrenmesi ile dolandırıcılık tespiti"},
+    {"id": "tr6", "lang": "tr", "topic": "Türkiye'de eğitimde yapay zekâ uygulamaları"}
+  ]
+}

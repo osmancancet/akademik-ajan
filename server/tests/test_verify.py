@@ -45,6 +45,21 @@ def test_year_off_by_one_is_partial(fetcher):
     assert r["status"] == "partial_match"
 
 
+def test_print_year_years_after_online_first_is_accepted():
+    # Found by blind adjudication: online 2016, print issue 2018, cited as 2018.
+    msg = {"DOI": "10.1177/0093650215627483", "title": ["Suspicion, cognition, and automaticity model"],
+           "author": [{"family": "Vishwanath"}], "issued": {"date-parts": [[2016, 2, 12]]},
+           "published-online": {"date-parts": [[2016, 2, 12]]},
+           "published-print": {"date-parts": [[2018, 7]]}}
+    f = FakeFetcher({"https://api.crossref.org/works/10.1177/0093650215627483": (200, {"message": msg})})
+    r = verify_reference(title="Suspicion, cognition, and automaticity model", authors=["Vishwanath, A."],
+                         year=2018, doi="10.1177/0093650215627483", fetch=f)
+    assert r["status"] == "verified"
+    r = verify_reference(title="Suspicion, cognition, and automaticity model", year=2021,
+                         doi="10.1177/0093650215627483", fetch=f)
+    assert r["status"] == "mismatch"
+
+
 def test_unknown_doi(fetcher):
     r = verify_reference(title="Anything", doi="10.5555/does.not.exist", fetch=fetcher)
     assert r["status"] == "doi_not_found"
@@ -58,7 +73,7 @@ def test_openalex_fallback(fetcher):
 
 def test_title_search_finds_turkish_work(fetcher):
     r = verify_reference(title="Sosyal mühendislik saldırılarında insan faktörü",
-                         authors=["Osman Can Çetlenbik"], year=2023, fetch=fetcher)
+                         authors=["Elif Nur Çalışkan"], year=2023, fetch=fetcher)
     assert r["status"] == "verified"
     assert r["doi"] == "10.1234/tr.2023.001"
 
@@ -90,7 +105,7 @@ def test_author_name_layouts():
     assert author_matches("Nurul Hidayat", "Nurul Hidayat")      # full name in family field
     assert author_matches("Hidayat, N.", "Nurul Hidayat")
     assert author_matches("Lluís Ribas de Pouplana", "Ribas de Pouplana")
-    assert author_matches("Osman Can ÇETLENBİK", "Çetlenbik")
+    assert author_matches("Elif Nur ÇALIŞKAN", "Çalışkan")
     assert not author_matches("Smith, J.", "Smithson")
     assert not author_matches("Kaya", "Yılmaz")
 

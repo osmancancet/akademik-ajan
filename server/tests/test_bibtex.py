@@ -15,7 +15,7 @@ BIB = r"""
 }
 @inproceedings{tr2023,
   title  = {Sosyal M{\"u}hendislik Sald{\i}r{\i}lar{\i}nda {\.I}nsan Fakt{\"o}r{\"u}},
-  author = {{\c{C}}etlenbik, Osman Can},
+  author = {{\c{C}}al{\i}{\c{s}}kan, Elif Nur},
   year   = {2023}
 }
 """
@@ -28,7 +28,7 @@ def test_parse_bibtex_fields():
     assert entries["fake2020"]["authors"] == ["Smith"]
     assert entries["tr2023"]["doi"] is None
     assert entries["tr2023"]["title"] == "Sosyal Mühendislik Saldırılarında İnsan Faktörü"
-    assert entries["tr2023"]["authors"] == ["Çetlenbik"]
+    assert entries["tr2023"]["authors"] == ["Çalışkan"]
 
 
 def test_verify_bibtex_summary(fetcher):

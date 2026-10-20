@@ -2,7 +2,7 @@
 
 An academic agent toolkit for [Claude Code](https://claude.com/claude-code), built around one rule: **nothing reaches a manuscript unless it was checked against a real source.**
 
-> Status: **v0.1.0 — early.** Only what is listed as *working* in [docs/STATUS.md](docs/STATUS.md) works. No stubs, no placeholder tools.
+> Status: **v0.2.0 — early.** Only what is listed as *working* in [docs/STATUS.md](docs/STATUS.md) works. No stubs, no placeholder tools.
 
 ## What works today
 
@@ -21,6 +21,17 @@ An academic agent toolkit for [Claude Code](https://claude.com/claude-code), bui
 | `lookup_doi` | Fetch the record (incl. abstract when available) for a DOI |
 | `search_works` | Bibliographic search by title/authors/year |
 
+**Literature review** (`literature-review` skill)
+
+- Searches Crossref, TR Dizin and OpenAlex at once, merges duplicates, records which source found each work, and ranks by a relevance score that copes with Turkish suffixes.
+- Exports BibTeX built only from registry fields; a missing page range stays missing.
+- The skill runs several query variants, screens on abstracts and returns a `.bib`, a review table and a search log (hits per source, exclusions with reasons).
+
+| Tool | Purpose |
+|---|---|
+| `search_literature` | Topic search with year range; merged, de-duplicated works with provenance and relevance |
+| `export_bibtex` | BibTeX entries for a list of DOIs |
+
 ## Install
 
 Requires [uv](https://docs.astral.sh/uv/) and Python ≥ 3.11.
@@ -32,7 +43,7 @@ Inside Claude Code:
 /plugin install akademik-ajan@akademik-ajan
 ```
 
-The plugin writes nothing to your global settings. It adds one MCP server and one skill.
+The plugin writes nothing to your global settings. It adds one MCP server and two skills.
 
 Optional environment variables:
 
@@ -51,6 +62,10 @@ uv run pytest
 
 Tests run offline against canned API responses.
 
+## Research
+
+`eval/llm/` holds a study of references written by language models: the fixed prompt protocol, raw model outputs, blind web adjudication and the scripts that produce every number ([report](eval/llm/REPORT.md), [design](docs/adr/0003-llm-reference-study.md)).
+
 ## Design principles
 
 See [docs/adr/0001-scope-and-principles.md](docs/adr/0001-scope-and-principles.md). In short: few features that genuinely work, pinned dependencies, no global side effects, measured token cost, and real sources only.
@@ -58,7 +73,7 @@ See [docs/adr/0001-scope-and-principles.md](docs/adr/0001-scope-and-principles.m
 ## Roadmap
 
 1. ✅ Citation verifier — live eval on an unseen set: 99% of real references accepted, 100% of synthetic fabrications caught ([details](docs/STATUS.md#live-evaluation-2026-10-20))
-2. Literature review: search → BibTeX → review table
+2. ✅ Literature review: search → BibTeX → review table
 3. Reviewer-response assistant
 4. Journal compliance check (APA/IEEE, word limits, structure)
 5. Turkish ↔ English academic terminology consistency
