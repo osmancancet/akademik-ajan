@@ -103,6 +103,21 @@ def main() -> None:
       "similar), which Crossref largely does not index. The v0.2.0 fix for online-first versus print years removed the "
       f"one false `mismatch`; v0.2.0 figures are optimistic because the fix came from this sample.")
     w("")
+    oa = n.get("openalex_recheck")
+    if oa:
+        w("### With OpenAlex reachable")
+        w("")
+        w(f"The {oa['rechecked']} strict false alarms of v0.2.0 were re-verified after OpenAlex's daily quota "
+          f"reset (OpenAlex unreachable for {oa['openalex_unchecked_after']} of them). Hard alarms "
+          f"(`not_found`, `doi_not_found`, `mismatch`) fell from {oa['strong_alarms_before']} to "
+          f"{oa['strong_alarms_after']}, and OpenAlex supplied the match for {oa['matched_via_openalex']} "
+          f"references. Strict false alarms fell only from {oa['rechecked']} to "
+          f"{oa['strict_false_alarms_after']}: most recovered references became `possible_match`. In the three "
+          "cases inspected, OpenAlex returned the arXiv preprint dated a year before the conference version "
+          "the model cited, so only the year check warned. "
+          "The flag is softer (the record is shown for confirmation), but it is still a flag. This was "
+          "observed on the development sample and is left unfixed here so that run B tests it.")
+        w("")
     w("## Limitations")
     w("")
     w("- Agent context, not isolated models: the project rule and user profile were visible.")

@@ -256,5 +256,24 @@
   "errors_confirmed_against_crossref": {
     "confirmed": 4,
     "checked": 4
+  },
+  "openalex_recheck": {
+    "rechecked": 33,
+    "openalex_unchecked_after": 0,
+    "before": {
+      "possible_match": 10,
+      "partial_match": 9,
+      "not_found": 14
+    },
+    "after": {
+      "possible_match": 17,
+      "partial_match": 9,
+      "verified": 2,
+      "not_found": 5
+    },
+    "strict_false_alarms_after": 31,
+    "strong_alarms_before": 14,
+    "strong_alarms_after": 5,
+    "matched_via_openalex": 12
   }
 }

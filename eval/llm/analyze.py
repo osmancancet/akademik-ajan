@@ -155,6 +155,22 @@ def main() -> None:
         n["errors_confirmed_against_crossref"] = {"confirmed": sum(c["confirmed"] for c in conf),
                                                    "checked": len(conf)}
 
+    # 6. Same false alarms re-verified while OpenAlex was reachable (recheck_openalex.py).
+    re_path = RES / "run_a_openalex_recheck.jsonl"
+    if re_path.exists():
+        rec = load_jsonl(re_path)
+        strong = {"not_found", "doi_not_found", "mismatch"}
+        n["openalex_recheck"] = {
+            "rechecked": len(rec),
+            "openalex_unchecked_after": sum(x["openalex_unchecked"] for x in rec),
+            "before": dict(Counter(x["before"] for x in rec)),
+            "after": dict(Counter(x["after"] for x in rec)),
+            "strict_false_alarms_after": sum(x["after"] != "verified" for x in rec),
+            "strong_alarms_before": sum(x["before"] in strong for x in rec),
+            "strong_alarms_after": sum(x["after"] in strong for x in rec),
+            "matched_via_openalex": sum(x["after_source"] == "openalex" for x in rec),
+        }
+
     (HERE / "numbers.json").write_text(json.dumps(n, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(json.dumps(n, indent=2, ensure_ascii=False))
 

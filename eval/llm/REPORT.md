@@ -43,6 +43,10 @@ Strict: only `verified` passes. Lenient: `partial_match` (e.g. year off by one) 
 
 Under the strict rule v0.1.0 flagged every erroneous reference, and 3 of its 4 `mismatch` verdicts were real errors. The cost is false alarms: 38 correct references were flagged, 24 of them cited without a DOI and 17 checked while OpenAlex was unavailable (keyless daily quota). After the v0.2.0 fixes, 30 of the 33 remaining false alarms are conference papers (NeurIPS, ICLR, USENIX Security and similar), which Crossref largely does not index. The v0.2.0 fix for online-first versus print years removed the one false `mismatch`; v0.2.0 figures are optimistic because the fix came from this sample.
 
+### With OpenAlex reachable
+
+The 33 strict false alarms of v0.2.0 were re-verified after OpenAlex's daily quota reset (OpenAlex unreachable for 0 of them). Hard alarms (`not_found`, `doi_not_found`, `mismatch`) fell from 14 to 5, and OpenAlex supplied the match for 12 references. Strict false alarms fell only from 33 to 31: most recovered references became `possible_match`. In the three cases inspected, OpenAlex returned the arXiv preprint dated a year before the conference version the model cited, so only the year check warned. The flag is softer (the record is shown for confirmation), but it is still a flag. This was observed on the development sample and is left unfixed here so that run B tests it.
+
 ## Limitations
 
 - Agent context, not isolated models: the project rule and user profile were visible.

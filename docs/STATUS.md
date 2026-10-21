@@ -47,7 +47,7 @@ Re-run with v0.2.0 (2026-10-20): holdout 90/90 real accepted, 60/60 fabricated c
 
 ## LLM-written references (run A pilot)
 
-See [`eval/llm/REPORT.md`](../eval/llm/REPORT.md), generated from `eval/llm/numbers.json`. In short: under the strict rule the verifier flagged every reference the adjudicators found wrong, and its main weakness is false alarms on conference papers cited without a DOI when OpenAlex is unavailable. Run B (clean API condition) is pending.
+See [`eval/llm/REPORT.md`](../eval/llm/REPORT.md), generated from `eval/llm/numbers.json`. In short: under the strict rule the verifier flagged every reference the adjudicators found wrong, and its main weakness is false alarms on conference papers cited without a DOI. With OpenAlex reachable, most hard `not_found` alarms become `possible_match` because OpenAlex returns the earlier arXiv preprint; see the report. Run B is pending.
 
 ## Known limitations
 
